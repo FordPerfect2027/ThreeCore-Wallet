@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: USDC page and browser dependencies are served; server reader is private; fixed RPC returns canonical data
+ok 1 - USDC page and browser dependencies are served; server reader is private; fixed RPC returns canonical data
+  ---
+  duration_ms: 455.6582
+  type: 'test'
+  ...
+# Subtest: origin, body, extra fields and UTF-8 checks reject unsafe requests before upstream
+ok 2 - origin, body, extra fields and UTF-8 checks reject unsafe requests before upstream
+  ---
+  duration_ms: 176.848
+  type: 'test'
+  ...
+# Subtest: only two jobs run together; disconnect aborts requests and releases capacity
+ok 3 - only two jobs run together; disconnect aborts requests and releases capacity
+  ---
+  duration_ms: 78.1621
+  type: 'test'
+  ...
+# Subtest: upstream error produces no partial balance or private error text
+ok 4 - upstream error produces no partial balance or private error text
+  ---
+  duration_ms: 15.628
+  type: 'test'
+  ...
+# Subtest: client restricts transport, binds account/height and rejects caller-selected networks or endpoints
+ok 5 - client restricts transport, binds account/height and rejects caller-selected networks or endpoints
+  ---
+  duration_ms: 111.7941
+  type: 'test'
+  ...
+# Subtest: client deadlines and cancellation stop a stalled fetch and stalled body
+ok 6 - client deadlines and cancellation stop a stalled fetch and stalled body
+  ---
+  duration_ms: 42.7226
+  type: 'test'
+  ...
+# Subtest: screen reads only explicitly, shows exact balances, saves decodable source and rejects unnoticed context change
+ok 7 - screen reads only explicitly, shows exact balances, saves decodable source and rejects unnoticed context change
+  ---
+  duration_ms: 19.3581
+  type: 'test'
+  ...
+# Subtest: editing, cancellation and leaving the page reject late reads and late checksums
+ok 8 - editing, cancellation and leaving the page reject late reads and late checksums
+  ---
+  duration_ms: 5.8431
+  type: 'test'
+  ...
+# Subtest: failure, wrong account and wrong height remain unavailable; explicit retry succeeds
+ok 9 - failure, wrong account and wrong height remain unavailable; explicit retry succeeds
+  ---
+  duration_ms: 9.9331
+  type: 'test'
+  ...
+# Subtest: failed download keeps a result; reentrant edits cannot report saved stale data
+ok 10 - failed download keeps a result; reentrant edits cannot report saved stale data
+  ---
+  duration_ms: 4.7436
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1278.1646

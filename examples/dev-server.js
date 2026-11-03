@@ -2,6 +2,7 @@ import { SECURITY_HEADERS, inspectLocalRequest } from "./security-http.js";
 import { renderLocalNavigationHelp } from "./local-navigation-help.js";
 import { createBaseStateRpcHandler } from "./base-state-rpc.js";
 import { createPublicBatchHandler } from "./public-token-batch-http.js";
+import { createPublicUsdcHandler } from "./public-usdc-http.js";
 import { createAerodromeQuoteHandler } from "./aerodrome-quote-http.js";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
@@ -10,6 +11,10 @@ import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const publicPaths = [
+  ["/usdc/read/", { file: resolve(here, "public-usdc.html"), mime: "text/html; charset=utf-8" }],
+  ["/examples/public-usdc-page.js", { file: resolve(here, "public-usdc-page.js"), mime: "text/javascript; charset=utf-8" }],
+  ...["public-usdc-request", "public-usdc-client"].map(name =>
+    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
   ["/quotes/", { file: resolve(here, "aerodrome-quote.html"), mime: "text/html; charset=utf-8" }],
   ["/examples/aerodrome-quote-page.js", { file: resolve(here, "aerodrome-quote-page.js"), mime: "text/javascript; charset=utf-8" }],
   ...["aerodrome-quote-request", "aerodrome-quote-client"].map(name =>
@@ -163,9 +168,10 @@ const publicPaths = [
   ["/src/dapp-preflight.js", { file: resolve(here, "../src/dapp-preflight.js"), mime: "text/javascript; charset=utf-8" }],
 ];
 
-export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch, publicBatchFetch = globalThis.fetch, quoteFetch = globalThis.fetch } = {}) {
+export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch, publicBatchFetch = globalThis.fetch, quoteFetch = globalThis.fetch, usdcFetch = globalThis.fetch } = {}) {
   const serveBaseStateRpc = createBaseStateRpcHandler(stateFetch);
   const servePublicBatch = createPublicBatchHandler(publicBatchFetch);
+  const servePublicUsdc = createPublicUsdcHandler(usdcFetch);
   const serveQuote = createAerodromeQuoteHandler(quoteFetch);
   const paths = new Map(publicPaths);
   if (uiTest) {
@@ -281,6 +287,9 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
     if (verdict.pathname === "/rpc/aerodrome-quote") {
       await serveQuote(request, response);
       return;
+    }
+    if (verdict.pathname === "/rpc/public-usdc") {
+      await servePublicUsdc(request, response); return;
     }
     if (verdict.pathname === "/rpc/public-token-batch") {
       await servePublicBatch(request, response);

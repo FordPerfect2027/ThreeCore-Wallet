@@ -1,0 +1,25 @@
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>USDCの公開残高確認 — ThreeCore</title><link rel="stylesheet" href="/examples/operation-rehearsal.css">
+</head><body><main><header><a href="/budget/" target="_blank" rel="noopener">予算入力を別タブで開く</a>
+<p><a href="/tokens/read/" target="_blank" rel="noopener">DAT・EMA・CAWELONの残高確認</a></p>
+<p class="eyebrow">THREECORE · BASE MAINNET</p><h1>USDCの公開残高確認</h1>
+<p>公開アドレスのUSDCとETHを同じブロックで確認します。Base MainnetのネイティブUSDCが対象です。</p>
+<p class="notice">読み取り専用です。入力した公開アドレスをBase公式RPCへ送ります。Wallet接続・署名・送金は不要です。秘密鍵やシードフレーズは入力しないでください。</p></header>
+<section aria-labelledby="usdc-input-title"><h2 id="usdc-input-title">読み取る口座</h2>
+<label>公開アドレス<input id="usdc-account" autocomplete="off" spellcheck="false" maxlength="42" placeholder="0x…"></label>
+<label>ブロック番号（空欄で取得開始時の最新）<input id="usdc-block" inputmode="numeric" autocomplete="off" maxlength="78"></label>
+<button id="usdc-read" type="button">USDCとETHを読み取る</button> <button id="usdc-cancel" type="button" disabled>読み取りを中止</button>
+<p id="usdc-status" role="status" aria-live="polite">公開アドレスを入力してください。</p></section>
+<section id="usdc-result" aria-labelledby="usdc-result-title" hidden><h2 id="usdc-result-title">取得したブロックでの残高</h2>
+<div class="table-wrap"><table><caption>Base Mainnetの公開記録</caption><tbody>
+<tr><th scope="row">公開アドレス</th><td id="usdc-account-result" class="restore-source"></td></tr>
+<tr><th scope="row">ブロック番号とハッシュ</th><td id="usdc-block-result" class="restore-source"></td></tr>
+<tr><th scope="row">USDCコントラクト</th><td id="usdc-token" class="restore-source"></td></tr>
+<tr><th scope="row">USDC残高</th><td id="usdc-balance"></td></tr><tr><th scope="row">ETH残高</th><td id="usdc-native"></td></tr>
+</tbody></table></div><p id="usdc-source" class="small"></p>
+<p>保存ファイルには公開アドレス、残高、ブロックとチェックサムが含まれます。表示した時点の記録であり、口座の所有者や取引の安全性の証明ではありません。</p>
+<button id="usdc-save" type="button" disabled>USDCの記録を保存</button><p id="usdc-save-status" role="status" aria-live="polite"></p>
+<p>次に<a href="/budget/" target="_blank" rel="noopener">予算入力</a>で「USDC」「Base Mainnet」を選び、このファイルを「公開残高の一括ファイル」から読み込んでください。保存した予算と原本は<a href="/budget/evidence/" target="_blank" rel="noopener">残高の照合</a>で一緒に確認できます。</p>
+</section></main><script type="module" src="/examples/public-usdc-page.js"></script></body></html>

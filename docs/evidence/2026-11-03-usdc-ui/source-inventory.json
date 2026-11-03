@@ -1,0 +1,49 @@
+{
+  "baseCommit": "4f1be21692c065ec16c4b1a6dc9cd761ab8b0bfd",
+  "sources": [
+    {
+      "path": "examples/dev-server.js",
+      "sha256": "876936c6dc4aab2ef2a3200734389a307ffe4ad54424fa9dd93ffb64da08a9e7"
+    },
+    {
+      "path": "examples/operation-budget-evidence.html",
+      "sha256": "7417351b5b09e04b968fdcb551febdcf8a8eb188d5063f77212b92008644d54c"
+    },
+    {
+      "path": "examples/operation-budget.html",
+      "sha256": "05f53884646452f52c81f1ad50d359ecd8b0ead7160c88c586042516116e82ef"
+    },
+    {
+      "path": "examples/public-token-batch.html",
+      "sha256": "0a8661a21a11bbf611d5aeca8f8b2def254f842daaab464d6cde48895b31cd88"
+    },
+    {
+      "path": "examples/public-usdc-http.js",
+      "sha256": "cc6dec7fc6f4c806a731f385b3e31a70229abd5e318534201dcdac47247f5086"
+    },
+    {
+      "path": "examples/public-usdc-page.js",
+      "sha256": "f91321c2d00e01a4ad2d3d7c562933f8d6a21d3153caab73bfccc79bf6851d0b"
+    },
+    {
+      "path": "examples/public-usdc.html",
+      "sha256": "be3955b4f5a4b6ff3c7918b891bb61db76fb6a24681d4ab115f88dd5fbf60f16"
+    },
+    {
+      "path": "integration/public-usdc-server.test.mjs",
+      "sha256": "3d4b0ad35c458301c29b74e0212d779d87eb891d719c2b266b3ccb11dbe1b6b4"
+    },
+    {
+      "path": "src/public-usdc-client.js",
+      "sha256": "b28eaffde445b3effb4da34e8b8b5a437e661c9928aa26797ddb441159b37c4d"
+    },
+    {
+      "path": "src/public-usdc-request.js",
+      "sha256": "293e1558d25e8dac8df1072e253fed5ef4ff5248c9137ff006a5e935933f98f5"
+    },
+    {
+      "path": "test/public-usdc-ui.test.js",
+      "sha256": "506c6b8587ad131f2d038a3a52a805119d836711bbc50e157d155c368ed0c108"
+    }
+  ]
+}

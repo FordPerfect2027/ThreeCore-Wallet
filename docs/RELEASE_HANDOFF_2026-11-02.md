@@ -11,6 +11,13 @@ funded accounts or repeating completed live connection exercises.
 
 ## Active development beyond the sealed package — November 3
 
+The [USDC acquisition screen](USDC_READ_UI_2026-11-03.md) completes ordinary
+browser read/cancel/save and budget handoff. All 55 related checks passed,
+including 10 new feature checks. Actual public results match the earlier command
+at the same block, apart from acquisition time. The downloaded source was used
+in the budget screen. Next short completion: proposal/conditions input and file
+flow using the existing strict review model; no user-wallet transaction is needed.
+
 The [USDC budget integration](USDC_BUDGET_2026-11-03.md) now supports
 individual and shared spending, canonical public USDC/ETH observations,
 source-preview transfer, evidence comparison and USDC-funded buy proposals.
