@@ -1,0 +1,36 @@
+{
+  "recordedAt": "2026-11-03T06:57:00.929Z",
+  "initialPackage": {
+    "verified": false,
+    "reason": "Empty outer manifest caused by an inventory helper retaining a stale array binding.",
+    "detectedBeforeDelivery": true,
+    "repair": "Rebuilt the inventory in one lexical scope, asserted 25 entries, created a replacement ZIP, freshly extracted and verified it.",
+    "invalidCopyPreserved": true
+  },
+  "offlineProbe": {
+    "firstEnvironment": "persistent JavaScript tool session",
+    "firstResult": "EventTarget is not defined while importing runtime dependencies",
+    "normalNodeExit": 0,
+    "normalNodeResult": {
+      "cards": 3,
+      "bytes": 10103,
+      "sha256": "6e4e79f3cb6efcb3cf49169779918e4bd6dd032b54a3c9d6af6d8cf5071e6c2a",
+      "checksumVerified": true,
+      "byteIdenticalRoundTrip": true,
+      "records": 9
+    },
+    "scope": "The ordinary Node process completed decoding/re-export. No runtime source or guards were changed."
+  },
+  "additionalBrowserReturn": {
+    "source": "fixed prior review 36ed431 at port 51031",
+    "result": "not established",
+    "observations": [
+      "Fresh tab opened the local opening-guide page, but automation timed out.",
+      "Rebinding that tab reported debugger unattached.",
+      "The already-open fixed-version tab also timed out before controls could be read."
+    ],
+    "preservedOriginalTabs": true,
+    "noDuplicateImportOrReload": true,
+    "scope": "No return-to-prior-version pass is inferred from these attempts. The earlier successful prior-to-corrected restore remains separately recorded."
+  }
+}

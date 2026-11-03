@@ -1,5 +1,16 @@
 # ThreeCore release preparation — November 1, 2026
 
+## Current completion record — November 3
+
+The [current development and release scope](ACCOUNT_REFRESH_DELIVERY_2026-11-03.md#current-development-and-release-scope)
+supersedes the historical assessment tables below. Developer review, the latest
+summary-display correction, complete Wallet regression, actual nine-record
+restoration and one-ZIP/four-source recovery are complete for their recorded
+scope. The standalone package pins Wallet `4dfa300` and the current three token
+revisions. No requester/reviewer identity is pending. Publication remains the
+requested later consolidated action; public CI and independent audit are not
+inferred from local checks. A numerical mainnet percentage remains unmeasured.
+
 ## Developer-review follow-up — November 3
 
 The user assigned the technical review to Codex. That bounded review is now

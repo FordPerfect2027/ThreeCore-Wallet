@@ -1,5 +1,14 @@
 # ThreeCore candidate review handoff — November 2, 2026
 
+## Latest consolidated delivery — November 3
+
+Start with the [current delivery and completion record](ACCOUNT_REFRESH_DELIVERY_2026-11-03.md).
+`ThreeCore-complete-4dfa300-20261103.zip` contains the corrected Wallet and all
+three token projects in one package. Fresh extraction verified 62 entries;
+the supplied single command restored all four exact source trees. Its contents
+include the account-input correction and completed developer review below.
+The older package records retain their historical scope and unchanged bytes.
+
 ## Current Wallet correction — November 3
 
 The latest implementation is `7bdb23d3398e1e92582a602bb22f06d364825412`.
