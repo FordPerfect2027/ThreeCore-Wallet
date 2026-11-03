@@ -11,6 +11,10 @@ helper archive and dependency pins are unchanged. The current source-change
 map is [recorded here](evidence/2026-11-03-developer-review/source-changes.json).
 The local workflow points to those new token commits for later publication.
 
+The [incremental delivery and recovery check](DEVELOPER_UPDATE_DELIVERY_2026-11-03.md)
+restored all four updated source versions and preserved the actual nine-record
+backup byte-for-byte across new/base/new decoders.
+
 Requester/reviewer assignment is not a blocker to continuing development.
 Independent third-party approval is not claimed. The sealed b7df758 package
 remains unchanged; these changes are a follow-up for consolidated delivery.

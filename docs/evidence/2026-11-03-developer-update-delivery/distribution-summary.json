@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-11-03T05:52:39.057Z",
+  "archive": {
+    "filename": "ThreeCore-developer-update-36ed431-20261103.zip",
+    "bytes": 57038,
+    "sha256": "950faba66f72cd62cc701b384e5f4028c3892bbce08c326dbf3417bb6ecf3278"
+  },
+  "freshExtraction": {
+    "entries": 9,
+    "totalBytes": 64142,
+    "allMatched": true,
+    "manifestSha256": "6e93a09457407294577707941523d2b9fd0101cb82dea087b661910fa82991c0"
+  },
+  "alterationControl": {
+    "exitCode": 1,
+    "checksumMismatchReported": true,
+    "targetDirectoryNotCreated": true
+  },
+  "restoredEvidence": {
+    "allMatched": true,
+    "summary": {
+      "manifests": 271,
+      "matchedManifests": 271,
+      "failedManifests": 0,
+      "files": 2946,
+      "mismatchedFiles": 0,
+      "unreadableFiles": 0,
+      "verifiedBytes": 124509305,
+      "admittedBytes": 124509305
+    }
+  },
+  "executionNote": "Initial evidence-check command used docs/evidence instead of repository root and returned EVIDENCE_REPOSITORY_ROOT_REQUIRED; corrected argument to repository root and reran.",
+  "noRuntimeChanges": true,
+  "githubWrites": false
+}
