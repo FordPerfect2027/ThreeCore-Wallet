@@ -44,7 +44,12 @@ function asynchronousResult(value, provider) {
   if (typeof then !== "function") return false;
   // Capture then once. Consume rejection without adopting its result as success.
   new Promise((resolve, reject) => {
-    then.call(value, resolve, reject);
+    const returned = Reflect.apply(then, value, [resolve, reject]);
+    // A malformed async then method may reject its own native promise without
+    // settling this bridge. Observe it without invoking another arbitrary then.
+    if (returned !== value && returned != null) {
+      try { Reflect.apply(Promise.prototype.then, returned, [() => {}, () => {}]); } catch {}
+    }
   }).catch(() => {});
   return true;
 }

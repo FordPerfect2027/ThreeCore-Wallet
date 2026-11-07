@@ -1,5 +1,6 @@
 import { createSecurityLock } from "../src/security-lock.js";
 import { createSecurityJournal } from "../src/security-journal.js";
+import { consumeCallback } from "../src/security-callback.js";
 import { mountSecurityJournalPanel } from "./security-journal-panel.js";
 import { mountTabGuardPanel } from "./tab-guard-panel.js";
 
@@ -27,6 +28,8 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
   const status = node("p", "status");
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
+  const retention = node("p", "retention", "接続の停止と履歴の削除は別です。履歴に追加済みの記録は、このページ内に残ります。ファイルへの保存完了を意味しません。ページを閉じる・再読み込みする前に履歴ファイルを保存してください。");
+  retention.hidden = true;
   const label = node("label", "idle-label", "操作がない場合に接続を停止するまでの時間");
   const idle = node("select", "idle", null, label);
   for (const [text, value] of [["1分", 60_000], ["5分", 300_000], ["15分", 900_000]]) {
@@ -100,6 +103,7 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
     finally { checkingResume = false; }
   }
   function render(state) {
+    retention.hidden = !state.locked;
     status.textContent = state.locked
       ? (reasons[state.reason] ?? "保護のため") + "、接続を停止しました。"
       : "接続操作を受け付けています。読み取りには各トークンの接続が必要です。";
@@ -186,12 +190,14 @@ export function mountSecurityPanel({ document, parent, eventTarget, onLock = () 
     dispose() {
       if (disposed) return;
       disposed = true;
-      for (const remove of listeners) remove();
-      tabGuardPanel.dispose();
-      lock.dispose();
-      journalPanel.dispose();
-      journal.dispose();
-      section.remove();
+      // Listener adapters can throw or return rejected promises; every owned
+      // resource still needs its own terminal cleanup attempt.
+      for (const remove of listeners) consumeCallback(remove);
+      consumeCallback(() => tabGuardPanel.dispose());
+      consumeCallback(() => lock.dispose());
+      consumeCallback(() => journalPanel.dispose());
+      consumeCallback(() => journal.dispose());
+      consumeCallback(() => section.remove());
     },
   });
 }

@@ -67,8 +67,8 @@ test("allowance server: all browser imports resolve locally", async () => {
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      // One additional local module captures own data before validation.
-      assert(visited.size <= 189, "Unexpected dependency expansion");
+      // One additional local module provides connection guidance.
+      assert(visited.size <= 195, "Unexpected dependency expansion"); // Proposal modules, historical codec and same-origin client.
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();
@@ -81,6 +81,8 @@ test("allowance server: all browser imports resolve locally", async () => {
     assert(visited.has("/src/security-data.js"));
     assert(visited.has("/src/security-callback.js") && visited.has("/src/security-abort.js"));
     assert(visited.has("/src/wallet-session.js"));
+    assert(visited.has("/src/wallet-connection-guidance.js"));
+    assert(visited.has("/src/agent-read-proposal.js") && visited.has("/src/agent-read-policy-registry.js") && visited.has("/examples/agent-proposal-panel.js"));
     assert(visited.has("/src/allowance-reader.js"));
     assert(visited.has("/src/state-notifier.js"));
     for (const name of ["model", "storage", "file", "query", "view", "controller", "sources", "continuity"]) {
@@ -90,8 +92,17 @@ test("allowance server: all browser imports resolve locally", async () => {
 });
 test("allowance server: production page styles and module remain present", async () => {
   await served(false, async base => {
-    const text = await (await fetch(base)).text();
-    assert(text.includes(".allowance-panel"));
+    const page = await fetch(base);
+    assert.equal(page.status, 200);
+    const text = await page.text();
+    const stylesheet = text.match(/<link\s+rel="stylesheet"\s+href="(\/examples\/wallet-demo\.css)"\s*>/);
+    assert.ok(stylesheet, "Production page links the external wallet stylesheet");
+    const css = await fetch(new URL(stylesheet[1], base));
+    assert.equal(css.status, 200);
+    assert.equal(css.headers.get("content-type"), "text/css; charset=utf-8");
+    assert.equal(css.headers.get("cache-control"), "no-store");
+    assert.equal(css.headers.get("x-content-type-options"), "nosniff");
+    assert((await css.text()).includes(".allowance-panel"));
     assert(text.includes("/examples/wallet-entry.js"));
     const entry = await (await fetch(base + "/examples/wallet-entry.js")).text();
     assert(entry.includes('from "./wallet-demo.js"'));

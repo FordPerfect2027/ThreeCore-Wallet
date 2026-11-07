@@ -7,7 +7,8 @@ import { workspaceDraftKey, workspaceToDraft } from "../src/workspace-format.js"
 import { decodeWorkspaceFile } from "../src/workspace-file.js";
 import { summarizeWorkspace } from "../src/workspace-overview.js";
 import { Element } from "./helpers/panel-dom.js";
-import { draft, clone, gate, tick, OPTIONS } from "./helpers/workspace-fixtures.js";
+import { draft, clone, gate, tick, OPTIONS, AGENTS, CONTRACTS, snapshot } from "./helpers/workspace-fixtures.js";
+import { archive } from "./helpers/history-fixtures.js";
 import { memoryStorage, stored, id, TIME, preparedDraft } from "./helpers/checkpoint-fixtures.js";
 
 function session(initial = draft({ populated: false, accounts: false }), storage = memoryStorage()) {
@@ -132,6 +133,65 @@ test("two save and restore cycles do not multiply historical observations", asyn
   second.dispose();
   third.dispose();
 });
+
+for (const [index, agent] of AGENTS.entries()) {
+  test(`${agent}: quick-save round trip retains old and new account evidence without implicit restore`, async t => {
+    const original = draft();
+    original[index].account = CONTRACTS[index];
+    original[index].chainId = 8453;
+    original[index].history = archive([
+      snapshot(index, "42"),
+      snapshot(index, "99", { account: CONTRACTS[index], chainId: 8453 }),
+    ]);
+    const source = session(original);
+    t.after(() => source.dispose());
+    assert.equal(await source.checkpoint.saveQuick(), true);
+    assert.equal(source.writes(), 0);
+    const saved = source.storage.current();
+    const target = session(undefined, memoryStorage(saved));
+    t.after(() => target.dispose());
+    assert.equal(summarizeWorkspace(target.readDraft()).configured, 0);
+    await target.stageFirst();
+    assert.equal(target.writes(), 0);
+    target.apply();
+    assert.equal(workspaceDraftKey(target.readDraft()), workspaceDraftKey(original));
+    assert.deepEqual(target.storage.current(), saved);
+    assert.equal(await target.checkpoint.saveQuick(), true);
+    assert.equal(target.storage.current().entries.length, 2);
+    assert.equal(summarizeWorkspace(target.readDraft()).totalObservations, 4);
+  });
+
+  test(`${agent}: backup and restore retain both accounts and networks after a wallet switch`, async t => {
+    const original = draft();
+    original[index].account = CONTRACTS[index];
+    original[index].chainId = 8453;
+    original[index].history = archive([
+      snapshot(index, "42"),
+      snapshot(index, "99", { account: CONTRACTS[index], chainId: 8453 }),
+    ]);
+    const source = session(original);
+    t.after(() => source.dispose());
+    await source.checkpoint.refresh();
+    assert.equal(await source.checkpoint.save("after wallet switch"), true);
+    const durable = source.storage.current();
+    const restored = session(undefined, memoryStorage(durable));
+    t.after(() => restored.dispose());
+    await restored.stageFirst();
+    assert.equal(restored.writes(), 0);
+    restored.apply();
+    assert.equal(workspaceDraftKey(restored.readDraft()), workspaceDraftKey(original));
+    const records = JSON.parse(restored.readDraft()[index].history).reports;
+    assert.equal(records.length, 2);
+    assert.deepEqual(records.map(row => row.snapshot.chainId), [84532, 8453]);
+    assert.notEqual(records[0].snapshot.account, records[1].snapshot.account);
+    assert.deepEqual(restored.storage.current(), durable);
+    // Reapplying a merge must not duplicate either old or new account records.
+    await restored.stageFirst();
+    restored.apply();
+    assert.equal(workspaceDraftKey(restored.readDraft()), workspaceDraftKey(original));
+    assert.equal(summarizeWorkspace(restored.readDraft()).totalObservations, 4);
+  });
+}
 
 test("corrupt stage input leaves a valid workspace preview intact", async () => {
   const prepared = await preparedDraft();

@@ -4,6 +4,7 @@ import { CHECKPOINT_LIMIT } from "../src/checkpoint-model.js";
 import { offerHistoryDownload } from "./history-files.js";
 import { createCheckpointCollectionReader } from "../src/checkpoint-transfer.js";
 
+const PRESERVE_PAGE = "ページを閉じたり再読み込みしたりせず、先に各画面の履歴・設定をファイルに保存し、保存完了を確認してください。";
 const ERRORS = Object.freeze({
   CHECKPOINT_EXPORT_REFUSED: "ダウンロードを開始できませんでした。控えは保存領域に残っています。再度操作してください。",
   CHECKPOINT_STAGE_REFUSED: "復元の入力欄へ渡せませんでした。控えを選び直して内容を確認してください。",
@@ -12,12 +13,12 @@ const ERRORS = Object.freeze({
   CHECKPOINT_IMPORT_REVIEW: "控え一覧ファイルを選び直し、追加内容を確認してください。",
   CHECKPOINT_UNAVAILABLE: "このブラウザーでは控えの保存領域を利用できません。ファイル保存を利用してください。",
   CHECKPOINT_QUOTA: "ブラウザーの保存容量が不足しています。既存の控えは自動で消しません。ファイル保存を利用してください。",
-  CHECKPOINT_BLOCKED: "ほかのページが保存領域を使用しています。ほかの同じ画面を閉じてから再読み込みしてください。",
+  CHECKPOINT_BLOCKED: "ほかのページの使用などで保存領域を開けません。" + PRESERVE_PAGE,
   CHECKPOINT_BUSY: "未完了の保存処理が上限に達しています。終了を待ってから一覧を読み直してください。",
-  CHECKPOINT_CLOCK: "経過時間を確認できません。ページを開き直してください。",
+  CHECKPOINT_CLOCK: "経過時間を確認できないため保存処理を停止しました。" + PRESERVE_PAGE,
   CHECKPOINT_TIMER: "時間の保護を開始できません。保存結果を一覧で確認してください。",
   CHECKPOINT_TIMEOUT: "保存領域を開けませんでした。ファイル保存を利用するか、後でもう一度一覧を読み込んでください。",
-  CHECKPOINT_VERSION: "この画面より新しい形式の保存領域があります。ページを更新してください。",
+  CHECKPOINT_VERSION: "この画面より新しい形式の保存領域があります。" + PRESERVE_PAGE + "その後で対応する版を確認してください。",
   CHECKPOINT_STALE: "別の画面で控えが更新されました。一覧を読み直してから操作してください。",
   CHECKPOINT_CAPACITY: "控えは保管中を含めて5件、合計24MiBまでです。自動では上書き・削除しません。",
   CHECKPOINT_LABEL: "控えの名前を1〜60文字で入力してください。改行や制御文字は使えません。",
@@ -94,7 +95,8 @@ export function mountCheckpointPanel({ document, parent, readDraft, onStage,
   const privacy = element("p", "privacy",
     "公開アドレスと残高を暗号化せずブラウザー内に保存します。秘密鍵や接続許可は含みません。" +
     "ブラウザーデータの削除・プライベートモード・容量整理で失われる場合があるため、ファイルも保存してください。");
-  const status = element("p", "status", "「保存済みの控え一覧を読み込む」から始めてください。");
+  const initialStatus = "新しく残す場合は「現在の3ウォレットを日時付きで保存」、以前の控えを使う場合は「保存済みの控え一覧を読み込む」を押してください。";
+  const status = element("p", "status", initialStatus);
   status.setAttribute("role", "status");
   const count = element("p", "count", "保存領域はまだ開いていません。");
   const name = element("input", "name");
@@ -113,6 +115,8 @@ export function mountCheckpointPanel({ document, parent, readDraft, onStage,
   const confirmed = element("input", "confirmed");
   confirmed.type = "checkbox";
   const detail = element("pre", "detail");
+  const quickSave = button("quick-save", "現在の3ウォレットを日時付きで保存", () => { void controller.saveQuick(); });
+  const quickNote = element("p", "quick-note", "このボタン1回で保存一覧を確認し、日時付きの新しい控えを追加します。既存の控えは上書きしません。PCへのファイル保存は別の操作です。");
   const refresh = button("refresh", "保存済みの控え一覧を読み込む", () => { void controller.refresh(); });
   const save = button("save", "現在の3ウォレットを新しい控えとして保存", () => { void controller.save(name.value); });
   const inspect = button("inspect", "選んだ控えの内容を確認", () => { void controller.inspect(); });
@@ -177,6 +181,7 @@ export function mountCheckpointPanel({ document, parent, readDraft, onStage,
     const locked = state.busy || reading;
     section.setAttribute("aria-busy", String(locked));
     refresh.disabled = locked;
+    quickSave.disabled = locked;
     save.disabled = locked || !state.metadata || state.metadata.count >= CHECKPOINT_LIMIT;
     name.disabled = rename.disabled = filter.disabled = locked;
     select.disabled = locked || !state.metadata;
@@ -197,7 +202,12 @@ export function mountCheckpointPanel({ document, parent, readDraft, onStage,
     if (locked) status.textContent = "PC内の保存領域・ファイルを確認しています。";
     else if (state.errorCode) status.textContent = ERRORS[state.errorCode] ?? "操作を完了できませんでした。ファイルバックアップを保全し、一覧を読み直してください。";
     else if (state.lastAction) status.textContent = MESSAGES[state.lastAction] +
-      (state.lastAction === "save" && state.currentDraftChanged ? " 保存処理の後に現在の入力が変わっています。" : "");
+      (state.lastAction === "save" && state.currentDraftChanged ? " 保存済みの控えは残っています。現在の入力が変わったか、一致を確認できません。" : "");
+    else status.textContent = !state.metadata
+      ? initialStatus
+      : selected
+        ? "選んだ控えの内容はまだ確認していません。「選んだ控えの内容を確認」を押してください。"
+        : "操作する控えを選択してください。現在の設定・履歴は変更していません。";
   }
   controller = createCheckpointController({ storage, readDraft, onStage, now, createId, subtle,
     download: prepared => download({ document, prepared }), onChange: render });
@@ -241,7 +251,7 @@ export function mountCheckpointPanel({ document, parent, readDraft, onStage,
       if (!disposed && token === readSequence) { reading = false; importFile.value = ""; }
     }
   }
-  section.append(heading, note, privacy, refresh, count,
+  section.append(heading, note, privacy, quickNote, quickSave, refresh, count,
     label("新しい控えの名前（60文字まで）", name), save,
     label("保管中の控えを表示する", filter), label("保存済みの控え", select),
     inspect, detail, stage, exportFile, label("選んだ控えの新しい名前", rename), renameButton,

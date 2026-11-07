@@ -113,6 +113,114 @@ async function loadCollection(text) {
 }
 
 export function registerCheckpointUITests(test) {
+  for (const shape of ["accessor", "prototype-trap", "descriptor-trap", "revoked-proxy"]) {
+    test(`checkpoint: ${shape} storage failure preserves IndexedDB and recovers`, async () => {
+      await isolated(async env => {
+        const storage = env.storage();
+        const before = await seed(storage);
+        let armed = false, accesses = 0;
+        let problem;
+        if (shape === "accessor") problem = { get code() { accesses++; throw Error("synthetic detail"); } };
+        if (shape === "prototype-trap") problem = new Proxy({}, { getPrototypeOf() { accesses++; throw Error("synthetic detail"); } });
+        if (shape === "descriptor-trap") problem = new Proxy({}, { getOwnPropertyDescriptor() { throw Error("synthetic detail"); } });
+        if (shape === "revoked-proxy") { const pair = Proxy.revocable({}, {}); pair.revoke(); problem = pair.proxy; }
+        const c = controller({
+          read: () => { if (armed) throw problem; return storage.read(); },
+          change: (...args) => storage.change(...args), close: () => storage.close(),
+        }, { now: () => TIME, createId: () => id(2) });
+        try {
+          assert(await c.refresh() === true, "Initial read failed");
+          armed = true;
+          assert(await c.refresh() === false, "Storage failure escaped containment");
+          assert(c.state().errorCode === "CHECKPOINT_ACTION" && !c.state().busy, "Failure left controller busy");
+          assert(accesses === 0, "Error inspection executed a getter or prototype trap");
+          equal(await storage.read(), before, "Failed read changed saved records");
+          armed = false;
+          assert(await c.refresh() === true, "Explicit refresh did not recover");
+          assert(await c.save("Recovered") === true, "Explicit save did not recover");
+          const after = await storage.read();
+          assert(after.entries.length === 2, "Recovery lost or duplicated records");
+          equal(after.entries[0], before.entries[0], "Recovery modified original record");
+          c.dispose();
+          equal(await env.storage().read(), after, "Reopening lost recovered records");
+        } finally { c.dispose(); }
+      });
+    });
+  }
+  for (const action of ["save", "saveQuick", "rename", "archive", "unarchive"]) {
+    for (const kind of ["promise", "async-then"]) {
+      for (const callback of (["save", "saveQuick"].includes(action) ? ["now", "createId"] : ["now"])) {
+        test(`checkpoint: ${action} contains ${kind} ${callback} and recovers with IndexedDB`, async () => {
+          await isolated(async env => {
+            const storage = env.storage();
+            let armed = false, nextId = 20;
+            const rejected = () => kind === "promise" ? Promise.reject(Error("synthetic callback failure")) :
+              { async then() { throw Error("synthetic callback failure"); } };
+            const c = controller(storage, {
+              now: () => armed && callback === "now" ? rejected() : TIME,
+              createId: () => armed && callback === "createId" ? rejected() : id(++nextId),
+            });
+            try {
+              await c.refresh();
+              assert(await c.save("original"), "Initial save failed");
+              if (action === "unarchive") assert(await c.archive(), "Initial archive failed");
+              const before = await storage.read();
+              armed = true;
+              assert(await c[action]("changed") === false, "Invalid callback authorized a write");
+              equal(await storage.read(), before, "Failure changed stored entries");
+              assert(c.state().errorCode === (callback === "now" ? "CHECKPOINT_TIME" : "CHECKPOINT_ID"), "Wrong failure code");
+              // Allow native unhandledrejection delivery. The suite's global
+              // error monitor must remain active; never suppress the event.
+              await new Promise(resolve => setTimeout(resolve, 20));
+              armed = false;
+              assert(await c[action]("recovered"), "Explicit retry did not recover");
+              const saved = await storage.read();
+              assert(saved.revision > before.revision, "Recovery did not commit");
+              c.dispose();
+              equal(await env.storage().read(), saved, "Recovered bytes did not survive reopen");
+            } finally { c.dispose(); }
+          });
+        });
+      }
+    }
+  }
+  test("checkpoint: one explicit quick-save click persists three histories without wallet calls", async make => {
+    await isolated(async env => {
+      const storage = env.storage();
+      const f = make(undefined, { checkpointStorage: storage });
+      restoreFixtureDraft();
+      assert(q("select").options.length === 1, "metadata loaded before explicit action");
+      assert(q("name").value === "", "manual name unexpectedly required");
+      await click("quick-save");
+      const saved = await storage.read();
+      assert(saved.entries.length === 1, "quick save absent");
+      assert(saved.entries[0].label.startsWith("ThreeCore "), "missing automatic name");
+      assert(q("select").value === saved.entries[0].id, "new checkpoint not selected");
+      assert(q("stage").disabled, "quick save bypassed inspection");
+      assert(!q("export").disabled, "saved checkpoint cannot be exported");
+      assert(f.calls.length === 0, "quick save requested wallet access");
+      f.app.dispose();
+      const reopened = env.storage();
+      equal(await reopened.read(), saved, "stored bytes did not survive adapter reopen");
+    });
+  });
+
+  test("checkpoint: selecting another saved checkpoint clears old inspection status", async make => {
+    await isolated(async env => {
+      const storage = env.storage();
+      await seed(storage, 2);
+      const f = make(undefined, { checkpointStorage: storage });
+      await click("refresh");
+      input(q("select"), id(1), "change");
+      await click("inspect");
+      input(q("select"), id(2), "change");
+      assert(q("status").textContent.includes("選んだ控えの内容はまだ確認していません"), "stale successful status");
+      assert(q("detail").textContent === "" && q("stage").disabled, "stale review enabled");
+      assert(f.calls.length === 0, "selection requested wallet access");
+      f.app.dispose();
+    });
+  });
+
   test("checkpoint: IndexedDB begins empty and persists committed bytes across connections", async () => {
     await isolated(async env => {
       const first = env.storage();

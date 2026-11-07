@@ -1,7 +1,9 @@
 import { observeWalletProvider } from "./provider-events.js";
+import { walletConnectionGuidance } from "./wallet-connection-guidance.js";
 import { createWalletReadScope } from "./wallet-read-scope.js";
 import { ThreeCoreWalletSession, normalizeAddress, normalizeChainId } from "./wallet-session.js";
 import { inspectDappSpender } from "./dapp-preflight.js";
+import { inspectAgentReadProposal } from "./agent-read-proposal.js";
 import { readPortfolioSnapshot } from "./portfolio-snapshot.js";
 import { readTokenIdentity } from "./token-identity-reader.js";
 import { readAllowanceSnapshot } from "./allowance-reader.js";
@@ -36,7 +38,14 @@ export function createWalletCardController({
     if (value === null || !["object", "function"].includes(typeof value)) return false;
     const then = value.then;
     if (typeof then !== "function") return false;
-    new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
+    new Promise((resolve, reject) => {
+      // Keep invocation inside the current transition boundary. Deferring this
+      // callback could let it start a new read or connection after the boundary.
+      const returned = Reflect.apply(then, value, [resolve, reject]);
+      if (returned !== value && returned != null) {
+        try { Reflect.apply(Promise.prototype.then, returned, [() => {}, () => {}]); } catch {}
+      }
+    }).catch(() => {});
     return true;
   }
   function cleanup(fn) {
@@ -164,7 +173,8 @@ export function createWalletCardController({
           PERMISSION_TIMEOUT: "接続許可の待機を終了しました。Walletの許可画面を確認し、完了後に再接続してください。",
           PERMISSION_PENDING: "Walletの許可画面がまだ処理中です。Wallet側で許可または拒否を完了してから再接続してください。",
         };
-        publish("disconnected", null, messages[code] ?? message);
+        publish("disconnected", null, messages[code] ??
+          walletConnectionGuidance(code, { agent, account, chainId }) ?? message);
         return false;
       }
     })();
@@ -277,6 +287,21 @@ export function createWalletCardController({
   }
   return Object.freeze({
     get state() { return state; }, connect, disconnect, clearResult, readBalances, inspect, dispose,
+    async inspectAgentProposal(proposalText, readPolicyText, now = Date.now) {
+      // Reuse the card's cancellation, protection and provider read scope.
+      // Never expose the raw wallet or let proposal data select a session.
+      let result;
+      let failure;
+      const accepted = await runRead(async (session, read) => {
+        try { result = await read(() => inspectAgentReadProposal(session, proposalText, readPolicyText, now)); }
+        catch (error) { failure = readErrorCode(error); throw error; }
+        return { kind: "agent-proposal", ...result };
+      });
+      if (!accepted || !result) {
+        throw Object.assign(Error("Agent proposal observation unavailable"), { code: failure ?? "PROPOSAL_UNAVAILABLE" });
+      }
+      return result;
+    },
     async readPeriod(plan, options = {}) {
       let result;
       let failure;

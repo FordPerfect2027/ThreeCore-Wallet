@@ -1,5 +1,26 @@
 # ThreeCore Wallet
 
+## Development status — November 8, 2026
+
+**Provisional progress toward mainnet readiness: 90%.** This is the project
+owner's planning estimate for ThreeCore Wallet. Release acceptance remains
+open. The estimate is independent of the number of tests passed.
+
+The local Wallet demo supports read-only DAT, EMA and CAWELON sessions, saved
+workspace recovery, and an optional proposal bridge. The
+[same-origin application host](docs/WALLET_DEMO_APPLICATION_EN.md) serves a fixed
+set of browser assets under a restrictive content security policy. The
+[proposal bridge](docs/WALLET_DEMO_PROPOSAL_BRIDGE_EN.md) requires explicit
+activation and a scoped grant. Requesting a proposal and executing a read are
+separate actions. The existing Base Mainnet read relay is available through the
+standalone local demo server.
+
+Mainnet release acceptance still requires verification with the intended
+three real Wallet accounts, production identity and authentication, private
+capability delivery and revocation, and authorized live-model operation with
+cost controls. Browser integration exercises these boundaries with synthetic
+providers and grants. The current development scope is read-only.
+
 **October 26, 2026 source publication:** [Backup, file import and history confirmation update](docs/WALLET_SECURITY_UPDATE_2026-10-26_EN.md). Includes four previously local development iterations: stopped backup preparation, revoked library reviews, cleared file-import state and single-use history confirmation. Real-wallet acceptance remains pending.
 
 **October 25, 2026 source publication:** [Security, cancellation and recovery update](docs/WALLET_SECURITY_UPDATE_2026-10-25_EN.md). Publishes 15 accumulated development commits. Final local validation: 12,559 tests passed, zero failures; real-wallet acceptance remains pending.

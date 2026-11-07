@@ -1,4 +1,10 @@
 import { walletStorageGuard } from "../src/storage-guard.js";
+import { createAgentReadPolicyRegistry } from "../src/agent-read-policy-registry.js";
+import { mountAgentProposalPanel } from "./agent-proposal-panel.js";
+import { captureDataRecord } from "../src/security-data.js";
+import { consumeCallback } from "../src/security-callback.js";
+import { validateConnectionAccount, walletConnectionGuidance } from "../src/wallet-connection-guidance.js";
+import { readErrorCode, readErrorMessage } from "../src/provider-error.js";
 import { mountStorageGuardPanel } from "./storage-guard-panel.js";
 import { getDocumentExportGuard } from "./export-download.js";
 import { mountExportGuardPanel } from "./export-guard-panel.js";
@@ -19,7 +25,7 @@ import { mountTransferVaultPanel } from "./transfer-vault-panel.js";
 import { vaultBundle } from "../src/transfer-vault-model.js";
 import { createWalletCardController } from "../src/wallet-card-controller.js";
 import { createWalletProviderRegistry } from "../src/provider-registry.js";
-import { AGENT_IDS, normalizeAddress } from "../src/wallet-session.js";
+import { AGENT_IDS, validateSiteOrigin } from "../src/wallet-session.js";
 import { mountPortfolioPanel } from "./portfolio-panel.js";
 import { mountWalletSetupPanel } from "./wallet-setup-panel.js";
 import { mountWorkspacePanel } from "./workspace-panel.js";
@@ -32,9 +38,30 @@ import { describeAllowanceOverview } from "../src/allowance-overview.js";
 import { mountAllowanceBundlePanel } from "./allowance-bundle-panel.js";
 import { mountTransferPanel } from "./transfer-panel.js";
 
+function captureProposalTransport(input, siteOrigin) {
+  if (input === null) return null;
+  try {
+    if (!input || typeof input !== "object") throw Error();
+    const keys = Reflect.ownKeys(input), allowed = ["origin", "enabled", "fetchImpl", "timeoutMs"];
+    if (keys.length < 1 || keys.length > allowed.length || !keys.includes("origin") || keys.some(key => !allowed.includes(key))) throw Error();
+    const value = captureDataRecord(input, keys), origin = validateSiteOrigin(siteOrigin);
+    if (value.origin !== origin || (Object.hasOwn(value, "enabled") && typeof value.enabled !== "boolean") ||
+      (Object.hasOwn(value, "fetchImpl") && typeof value.fetchImpl !== "function") ||
+      (Object.hasOwn(value, "timeoutMs") && (!Number.isSafeInteger(value.timeoutMs) || value.timeoutMs < 1 || value.timeoutMs > 60000))) throw Error();
+    return Object.freeze({ ...value, origin, enabled: value.enabled ?? false });
+  } catch { throw Object.assign(Error("INVALID_PROPOSAL_TRANSPORT"), { code: "INVALID_PROPOSAL_TRANSPORT" }); }
+}
+
 /** Dependencies are explicit so browser tests never consult a real extension. */
-export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions, rpcSupervisor = walletRpcSupervisor, fileReadService = walletFileReadService, storageGuard = walletStorageGuard, exportGuard = getDocumentExportGuard(document) }) {
+export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyProvider, checkpointStorage, createSession, transferVaultStorage, tabGuardOptions, rpcSupervisor = walletRpcSupervisor, fileReadService = walletFileReadService, storageGuard = walletStorageGuard, exportGuard, proposalTransport = null }) {
+  // Capture optional configuration before touching the DOM or creating export
+  // resources. It never contains a capability or a browser registration URL.
+  const transport = captureProposalTransport(proposalTransport, siteOrigin);
+  if (exportGuard === undefined) exportGuard = getDocumentExportGuard(document);
+  let disposed = false;
   const grid = document.querySelector("#grid");
+  const proposalPolicies = createAgentReadPolicyRegistry();
+  const proposalPanels = new Map();
   const cards = [], controllers = new Map(), cleanup = [], panels = [], identityPanels = [];
   const allowancePanels = [];
   const transferPanels = [];
@@ -128,7 +155,8 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     else text = card.dataset.agent + " 接続済み\n" + state.connection.account + "\nチェーン: " + state.connection.chainId;
     if (state.error) text += "\n" + state.error;
     if (state.result) {
-      const result = state.result;
+      const result = state.result.kind === "agent-proposal"
+        ? { kind: "agent-proposal", ...state.result.observation } : state.result;
       text += "\n参照ブロック: " + (result.blockNumber ?? result.identity?.blockNumber);
       if (result.kind === "allowances") text += "\n承認額の記録を下のパネルに表示しています。";
       if (result.kind === "transfers") text += "\n送受信履歴を下のパネルに表示しています。";
@@ -145,7 +173,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         text += "\n承認先: " + result.spenderAddress;
         text += "\n既存の承認額（最小単位）: " + (result.existingAllowanceBaseUnits ?? "確認できません");
       }
-      if (result.kind === "preflight") {
+      if (["preflight", "agent-proposal"].includes(result.kind)) {
         if (!result.spenderHasCode) text += "\n承認先のコードが見つかりません。";
         text += "\n読み取り専用です。承認・送金は行っていません。安全性を保証する検査ではありません。";
       }
@@ -171,19 +199,32 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     let identityPanel;
     let allowancePanel;
     let transferPanel;
+    let proposalPanel;
     let wasConnected = false;
     const controller = createWalletCardController({ agent, siteOrigin, createSession, rpcSupervisor,
       isAccessAllowed: securityPanel.check, onChange: state => {
       render(card, state);
+      const proposalConnectionLost = wasConnected && !state.connection?.connected;
       if (wasConnected && !state.connection?.connected) periodPanel?.invalidate();
       if (wasConnected && !state.connection?.connected) panel?.invalidate();
       if (wasConnected && !state.connection?.connected) identityPanel?.invalidate();
       if (wasConnected && !state.connection?.connected) allowancePanel?.invalidate();
       if (wasConnected && !state.connection?.connected) transferPanel?.invalidate();
       wasConnected = state.connection?.connected === true;
+      if (proposalConnectionLost) proposalPanel?.invalidate();
     } });
     controllers.set(card, controller);
     render(card, controller.state);
+    proposalPanel = mountAgentProposalPanel({ document, parent: card, agent, registry: proposalPolicies,
+      proposalTransport: transport,
+      getContext: () => ({ connection: controller.state.connection,
+        tokenAddress: card.querySelector(".token").value.trim(), spenderAddress: card.querySelector(".spender").value.trim() }),
+      read: (text, policy, clock) => controller.inspectAgentProposal(text, policy, clock),
+      readFile: (file, options) => fileReadService.readText(file, options),
+      onCancel: () => controller.clearResult(),
+    });
+    proposalPanels.set(agent, proposalPanel);
+    cleanup.push(() => proposalPanel.dispose());
     panel = mountPortfolioPanel({ document, card,
       read: options => controller.readPortfolio(options),
       onCancel: () => controller.clearResult(),
@@ -210,6 +251,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
       read: options => controller.readIdentity(options),
       applyAddress: address => {
         card.querySelector(".token").value = address;
+        proposalPanel.invalidate();
         controller.clearResult();
         panel.invalidate();
         allowancePanel?.invalidate();
@@ -241,13 +283,12 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
         const choice = value(".provider");
         const provider = choice === "legacy" ? getLegacyProvider() : registry.getProvider(choice);
         if (!provider) throw Error("接続するWalletを選択してください。");
-        const account = normalizeAddress(value(".account"));
-        for (const other of cards.filter(item => item !== card)) {
-          const address = other.querySelector(".account").value.trim();
-          if (address && normalizeAddress(address) === account) throw Error("別のエージェントと同一のWalletアドレスです。");
-        }
+        const account = validateConnectionAccount(value(".account"),
+          cards.filter(item => item !== card).map(other => other.querySelector(".account").value.trim()));
         controller.connect({ provider, account, chainId: Number(value(".chain")) });
-      } catch (error) { controller.disconnect(error.message); }
+      } catch (error) {
+        controller.disconnect(walletConnectionGuidance(readErrorCode(error), { agent }) ?? readErrorMessage(error));
+      }
     });
     listen(card.querySelector(".read"), "click", () => controller.readBalances({
       tokenAddress: value(".token"), spenderAddress: value(".spender"),
@@ -261,7 +302,7 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
     }
     listen(card.querySelector(".account"), "input", () => controller.disconnect("公開アドレスを変更しました。再接続してください。"));
     for (const selector of [".token", ".spender"]) {
-      listen(card.querySelector(selector), "input", () => controller.clearResult());
+      listen(card.querySelector(selector), "input", () => { controller.clearResult(); proposalPanel.invalidate(); });
     }
     for (const selector of [".provider", ".chain", ".account"]) {
       listen(card.querySelector(selector), selector === ".account" ? "input" : "change", () => panel.invalidate());
@@ -448,36 +489,65 @@ export function mountWalletDemo({ document, eventTarget, siteOrigin, getLegacyPr
   }
   registry = createWalletProviderRegistry({ eventTarget, onChange: renderWalletProviders });
   renderWalletProviders(registry.list());
+  const proposalPanelFor = agent => !disposed && typeof agent === "string" && AGENT_IDS.includes(agent)
+    ? proposalPanels.get(agent) : null;
   return Object.freeze({
+    readProposalContext(agent) {
+      const panel = proposalPanelFor(agent);
+      if (!panel) return null;
+      try {
+        if (!securityPanel.check() || disposed) return null;
+        const snapshot = panel.readProposalContext();
+        return !disposed && securityPanel.check() ? snapshot : null;
+      } catch { return null; }
+    },
+    acceptProposalGrant(agent, grant) {
+      const panel = proposalPanelFor(agent);
+      if (!panel || !transport?.enabled) return false;
+      try {
+        if (!securityPanel.check() || disposed) return false;
+        const accepted = panel.acceptProposalGrant(grant);
+        return !disposed && securityPanel.check() && accepted === true;
+      } catch { return false; }
+    },
+    revokeProposalGrant(agent) {
+      const panel = proposalPanelFor(agent);
+      return panel ? panel.revokeProposalGrant() : false;
+    },
     dispose() {
-      securityPanel.dispose();
-      securityHost.remove();
-      reportSet.dispose();
-      reportSetHost.remove();
-      reportHistory.dispose();
-      reportHistoryHost.remove();
-      periodReport.dispose();
-      periodReportHost.remove();
-      periodLibrary.dispose();
-      periodLibraryHost.remove();
-      periodPanel.dispose();
-      periodHost.remove();
-      reconciliationPanel.dispose();
-      reconciliationHost.remove();
-      transferVaultPanel.dispose();
-      transferVaultHost.remove();
-      checkpointPanel.dispose();
-      workspacePanel.dispose();
-      setupPanel.dispose();
-      setupHost.remove();
-      identityHost.remove();
-      allowanceHost.remove();
-      allowanceBundlePanel.dispose();
-      registry.dispose();
-      for (const panel of panels) panel.dispose();
-      for (const controller of controllers.values()) controller.dispose();
-      for (const stop of cleanup) stop();
-      grid.replaceChildren();
+      if (disposed) return;
+      disposed = true;
+      // One failing adapter cleanup must not retain another panel's live grant,
+      // controller or listener. The public handle is already terminal above.
+      consumeCallback(() => securityPanel.dispose());
+      consumeCallback(() => securityHost.remove());
+      consumeCallback(() => reportSet.dispose());
+      consumeCallback(() => reportSetHost.remove());
+      consumeCallback(() => reportHistory.dispose());
+      consumeCallback(() => reportHistoryHost.remove());
+      consumeCallback(() => periodReport.dispose());
+      consumeCallback(() => periodReportHost.remove());
+      consumeCallback(() => periodLibrary.dispose());
+      consumeCallback(() => periodLibraryHost.remove());
+      consumeCallback(() => periodPanel.dispose());
+      consumeCallback(() => periodHost.remove());
+      consumeCallback(() => reconciliationPanel.dispose());
+      consumeCallback(() => reconciliationHost.remove());
+      consumeCallback(() => transferVaultPanel.dispose());
+      consumeCallback(() => transferVaultHost.remove());
+      consumeCallback(() => checkpointPanel.dispose());
+      consumeCallback(() => workspacePanel.dispose());
+      consumeCallback(() => setupPanel.dispose());
+      consumeCallback(() => setupHost.remove());
+      consumeCallback(() => identityHost.remove());
+      consumeCallback(() => allowanceHost.remove());
+      consumeCallback(() => allowanceBundlePanel.dispose());
+      consumeCallback(() => registry.dispose());
+      for (const panel of panels) consumeCallback(() => panel.dispose());
+      for (const controller of controllers.values()) consumeCallback(() => controller.dispose());
+      for (const stop of cleanup) consumeCallback(stop);
+      proposalPanels.clear();
+      consumeCallback(() => grid.replaceChildren());
     },
   });
 }

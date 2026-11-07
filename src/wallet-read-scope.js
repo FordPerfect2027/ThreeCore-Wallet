@@ -3,6 +3,8 @@
  * next subread. It cannot cancel an RPC already accepted by a wallet extension.
  * The RPC supervisor retains responsibility for that provider's pending capacity.
  */
+import { consumeCallback } from "./security-callback.js";
+
 export const WALLET_READ_METHODS = Object.freeze([
   "getBlockSnapshot", "getNativeBalance", "getContractCode", "getTokenBalance",
   "getTokenAllowance", "getTokenMetadata", "getTransferEvents",
@@ -16,7 +18,7 @@ export function createWalletReadScope({ isCurrent, onSettled = () => {} }) {
   let inspecting = false;
   const pending = new Set();
   function notifySettled() {
-    try { Promise.resolve(onSettled()).catch(() => {}); } catch {}
+    consumeCallback(onSettled);
   }
   function cancel() {
     if (closed) return false;
@@ -36,7 +38,14 @@ export function createWalletReadScope({ isCurrent, onSettled = () => {} }) {
       if (value && ["object", "function"].includes(typeof value)) {
         const then = value.then;
         if (typeof then === "function") {
-          new Promise((resolve, reject) => then.call(value, resolve, reject)).catch(() => {});
+          new Promise((resolve, reject) => {
+            // Retain the synchronous inspection guard while observing a
+            // malformed async then method's own rejected native promise.
+            const returned = Reflect.apply(then, value, [resolve, reject]);
+            if (returned !== value && returned != null) {
+              try { Reflect.apply(Promise.prototype.then, returned, [() => {}, () => {}]); } catch {}
+            }
+          }).catch(() => {});
         }
       }
       accepted = value === true;

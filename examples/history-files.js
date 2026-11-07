@@ -3,6 +3,7 @@ import { readSecurityFileBytes } from "../src/security-file.js";
 import { createHistoryFileReader } from "../src/history-file-reader.js";
 import { prepareHistoryDownload, createHistoryBackupTracker } from "../src/history-file.js";
 import { exportFilteredHistory, queryPortfolioHistory } from "../src/history-query.js";
+import { requireSyncExport } from "../src/export-policy.js";
 
 /** Browser file actions are explicit and scoped to one agent card. */
 export function mountHistoryFiles({ document, parent, agent, getArchive, getRevision, onImportText, onReadStart = () => {},
@@ -10,8 +11,21 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   download = offerHistoryDownload }) {
   const cleanup = [];
   let disposed = false;
+  let generation = 0;
   let view = null;
   const backup = createHistoryBackupTracker();
+  const current = id => !disposed && id === generation;
+  function exportAction(run) {
+    const id = ++generation;
+    try { run(id); }
+    catch (error) {
+      if (current(id)) throw error;
+    }
+  }
+  function deliver(prepared, id) {
+    requireSyncExport(download({ document, prepared }));
+    return current(id);
+  }
   const section = document.createElement("section");
   section.className = "history-files";
   function node(tag, name, text) {
@@ -88,19 +102,23 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     file.value = "";
   });
   function updateBackup() {
+    const id = generation;
     const state = backup.state(getRevision());
+    if (!current(id)) return;
     backupState.textContent = state.currentDownloadOffered
       ? "現在の履歴のダウンロードを開始済みです。PCへの保存完了はブラウザーで確認してください。"
       : "現在の履歴は、この画面からまだファイルとしてダウンロードしていません。";
   }
-  const save = button("history-file-save", "履歴ファイルをダウンロード", () => {
+  const save = button("history-file-save", "履歴ファイルをダウンロード", () => exportAction(id => {
     const revision = getRevision();
+    if (!current(id)) return;
     const prepared = prepareHistoryDownload(getArchive(), agent, revision);
-    download({ document, prepared });
+    if (!current(id) || !deliver(prepared, id)) return;
     backup.offered(revision);
     updateBackup();
+    if (!current(id)) return;
     status.textContent = prepared.filename + " のダウンロードを開始しました。保存先を確認してください。";
-  });
+  }));
   const filterHeading = node("h4", "", "履歴の絞り込み・一部だけ保存");
   const account = node("input", "history-filter-account");
   account.type = "text";
@@ -156,14 +174,17 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
       snapshot.agent + " / " + snapshot.account + " / chain " + snapshot.chainId + " / block " + snapshot.blockNumber).join("\n");
     saveSubset.disabled = result.matchCount === 0;
   });
-  const saveSubset = button("history-file-save-subset", "表示した履歴だけダウンロード", () => {
-    if (!view || view.revision !== getRevision()) throw Error("Review changed history");
-    const subset = exportFilteredHistory(view.archive, view.criteria);
-    const prepared = prepareHistoryDownload(subset.text, agent, view.revision);
-    download({ document, prepared: Object.freeze({ ...prepared, filename: prepared.filename.replace(".json", "-filtered.json") }) });
+  const saveSubset = button("history-file-save-subset", "表示した履歴だけダウンロード", () => exportAction(id => {
+    const selected = view;
+    if (!selected || selected.revision !== getRevision()) throw Error("Review changed history");
+    if (!current(id) || view !== selected) return;
+    const subset = exportFilteredHistory(selected.archive, selected.criteria);
+    const prepared = prepareHistoryDownload(subset.text, agent, selected.revision);
+    if (!deliver(Object.freeze({ ...prepared, filename: prepared.filename.replace(".json", "-filtered.json") }), id) ||
+        view !== selected) return;
     // A partial export does not mark the full collection as backed up.
     status.textContent = subset.exportedCount + "件だけのファイルをダウンロード開始しました。全履歴の保存ではありません。";
-  });
+  }));
   saveSubset.disabled = true;
   const resetFilters = button("history-filter-reset", "絞り込み条件を消去", () => {
     for (const input of [account, chain, minimum, maximum]) input.value = "";
@@ -184,6 +205,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
   return Object.freeze({
     invalidate() {
       if (disposed) return;
+      generation++;
       reader.reset();
       invalidateView();
       updateBackup();
@@ -191,6 +213,7 @@ export function mountHistoryFiles({ document, parent, agent, getArchive, getRevi
     dispose() {
       if (disposed) return;
       disposed = true;
+      generation++;
       reader.dispose();
       for (const stop of cleanup) stop();
       section.remove();

@@ -49,6 +49,75 @@ async function waitFor(predicate) {
 }
 
 export function registerWorkspaceUITests(test) {
+  for (const shape of ["code-getter", "revoked-proxy", "known-own-code", "dictionary-prototype-key"]) {
+    test(`workspace: failed save with ${shape} replaces old success and preserves every history`, async () => {
+      const parent = document.createElement("section");
+      document.querySelector("#grid").append(parent);
+      const field = name => parent.querySelector(".workspace-" + name);
+      let current = draft("10"), broken = false, writes = 0, getterReads = 0;
+      let problem;
+      if (shape === "code-getter") {
+        problem = { get code() { getterReads++; throw Error("Synthetic formatter exception"); } };
+      } else if (shape === "revoked-proxy") {
+        const pair = Proxy.revocable({}, {});
+        pair.revoke(); problem = pair.proxy;
+      } else problem = { code: shape === "known-own-code" ? "WORKSPACE_DOWNLOAD" : "constructor" };
+      const attempts = [], downloads = [];
+      const panel = mountWorkspacePanel({ document, parent,
+        readDraft: () => current,
+        writeDraft(value) { writes++; current = value; },
+        download({ prepared }) {
+          attempts.push(prepared);
+          if (broken) throw problem;
+          downloads.push(prepared);
+          return true;
+        },
+      });
+      async function save() {
+        field("save").click();
+        await waitFor(() => !field("save").disabled);
+        // The suite's global rejection monitor must also see errors escaping the click.
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+      try {
+        await save();
+        assert(downloads.length === 1, "Initial backup was not offered");
+        const oldStatus = field("status").textContent;
+        assert(oldStatus.includes("ダウンロードを開始しました"), "Initial save was not reported");
+        const added = draft("20");
+        current = current.map((row, index) => {
+          const archive = JSON.parse(row.history);
+          archive.reports.push(...JSON.parse(added[index].history).reports);
+          return { ...row, history: JSON.stringify(archive) };
+        });
+        panel.invalidate();
+        const before = JSON.stringify(current);
+        assert(current.every(row => JSON.parse(row.history).reports.length === 2), "Expected six local observations");
+        broken = true;
+        await save();
+        const expected = shape === "known-own-code"
+          ? "ダウンロードを開始できませんでした。操作前の控えと保存履歴は保持しています。もう一度保存を試してください。"
+          : "バックアップの形式や入力を確認してください。操作は完了していません。";
+        assert(field("status").textContent === expected, "Failed save retained or invented a success notice");
+        assert(field("status").textContent !== oldStatus, "Old success was not replaced");
+        assert(getterReads === 0, "Error formatting ran an accessor");
+        assert(downloads.length === 1 && attempts.length === 2, "Failed save offered a new file");
+        assert(writes === 0 && JSON.stringify(current) === before, "Failed save changed current records");
+        assert(field("backup-status").textContent.includes("内容が変わった"), "Failed save marked changed records as saved");
+        assert(!field("save").disabled && field("panel").getAttribute("aria-busy") === "false", "Failure left controls busy");
+        broken = false;
+        await save();
+        assert(downloads.length === 2 && attempts.length === 3, "Explicit retry did not offer a new file");
+        assert(downloads[1].text === attempts[1].text, "Retry changed the prepared backup");
+        const saved = JSON.parse(downloads[1].text).workspace;
+        assert(saved.entries.length === 3 && saved.entries.every(row => row.history.reports.length === 2), "Retry lost observations");
+        assert(writes === 0 && JSON.stringify(current) === before, "Retry changed current records");
+        assert(field("status").textContent.includes("ダウンロードを開始しました"), "Retry was not reported");
+        assert(field("backup-status").textContent.includes("現在の内容でダウンロードを開始済み"), "Retry did not update backup status");
+      } finally { panel.dispose(); parent.remove(); }
+    });
+  }
+
   for (const mode of ["restore", "undo"]) {
     for (const event of ["edit", "dispose"]) {
       test(`workspace: ${event} during ${mode} disconnect preserves every card`, async make => {
@@ -335,6 +404,46 @@ export function registerWorkspaceUITests(test) {
       assert(card(agent, ".read").disabled, agent + " not connected");
     });
     assert(f.calls.length === 0, "no automatic provider calls");
+  });
+
+  test("workspace: duplicate backup file explains source rejection and preserves nine card histories", async make => {
+    const f = make();
+    for (const block of ["10", "20", "30"]) { review(payload(block)); apply(); }
+    const readCards = () => AGENTS.map(agent => {
+      card(agent, ".history-export").click();
+      const saved = card(agent, ".history-json").value;
+      assert(JSON.parse(saved).reports.length === 3, agent + " retains three exact observations");
+      return { agent, account: card(agent, ".account").value, chain: card(agent, ".chain").value,
+        token: card(agent, ".token").value, tokens: card(agent, ".portfolio-tokens").value, history: saved };
+    });
+    const before = JSON.stringify(readCards());
+    check("settings", false);
+    review(payload("40"));
+    check("confirmed");
+    assert(!q("apply").disabled, "valid earlier preview was explicitly confirmed");
+    const oldJson = q("json").value;
+    const incoming = JSON.parse(payload("40"));
+    for (const row of incoming.entries) row.account = incoming.entries[0].account;
+    const bytes = new TextEncoder().encode(JSON.stringify(incoming, null, 2));
+    const hash = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes));
+    const digest = [...hash].map(value => value.toString(16).padStart(2, "0")).join("");
+    const file = JSON.stringify({ schema: "threecore-workspace-file-v1", algorithm: "SHA-256", digest, workspace: incoming });
+    const transfer = new DataTransfer();
+    transfer.items.add(new File([file], "duplicate-settings-backup.json", { type: "application/json" }));
+    q("file").files = transfer.files;
+    q("file").dispatchEvent(new Event("change", { bubbles: true }));
+    await waitFor(() => !q("file").disabled);
+    const status = q("status").textContent;
+    assert(status.includes("読み込むバックアップ内"), "error identifies the imported settings");
+    assert(status.includes("履歴だけを選んでも一括復元できません"), "history-only restriction is explained");
+    assert(status.includes("画面の設定を変えても") && status.includes("重複は解消しません"), "current form edits are not presented as a repair");
+    assert(status.includes("元のファイルやJSONを保管"), "original backup is preserved");
+    assert(q("apply").disabled && !q("confirmed").checked, "failed import revoked the old confirmation");
+    assert(q("json").value === oldJson, "failed file import retained the previous JSON draft");
+    q("apply").click();
+    assert(JSON.stringify(readCards()) === before, "all card settings and nine observations remain identical");
+    assert(AGENTS.every(agent => card(agent, ".read").disabled), "restoring history did not reconnect wallets");
+    assert(f.calls.length === 0, "no provider requests for rejected file or historical recovery");
   });
 
   test("workspace: changing an existing connected configuration disconnects it", async make => {

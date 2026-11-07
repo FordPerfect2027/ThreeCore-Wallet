@@ -58,6 +58,35 @@ test("panel exposes plain-language scope and privacy information", () => {
   f.panel.dispose();
 });
 
+test("quick-save click works from a fresh panel without a name or refresh click", async t => {
+  const f = fixture();
+  t.after(() => f.panel.dispose());
+  assert.equal(f.field("quick-save").disabled, false);
+  assert.equal(f.field("name").value, "");
+  assert.deepEqual(f.storage.calls, []);
+  await f.click("quick-save");
+  assert.equal(f.storage.current().entries[0].label, "ThreeCore " + TIME);
+  assert.match(f.field("status").textContent, /控えを保存しました/);
+  assert.equal(f.field("export").disabled, false);
+  assert.equal(f.field("stage").disabled, true);
+  assert.equal(f.downloads.length, 0);
+  assert.equal(f.staged.length, 0);
+});
+
+test("quick-save button stays locked throughout metadata loading and the write", async t => {
+  const f = fixture(), pending = gate();
+  t.after(() => f.panel.dispose());
+  f.storage.onRead(() => pending.promise);
+  f.field("quick-save").click();
+  assert.equal(f.field("quick-save").disabled, true);
+  assert.equal(f.field("refresh").disabled, true);
+  f.field("quick-save").click();
+  pending.resolve();
+  await f.settled();
+  assert.deepEqual(f.storage.calls, ["read", "save"]);
+  assert.equal(f.field("quick-save").disabled, false);
+});
+
 test("refresh enables save without restoring any wallet data", async () => {
   const f = fixture();
   await f.click("refresh");
@@ -90,6 +119,27 @@ test("saving selects the new snapshot but requires inspection before stage", asy
   f.panel.dispose();
 });
 
+test("confirmed save remains visible when the live draft becomes unreadable after commit", async t => {
+  let reads = 0;
+  const f = fixture({ readDraft: () => {
+    if (++reads === 4) throw Error("Live form is unavailable");
+    return draft();
+  } });
+  t.after(() => f.panel.dispose());
+  await f.click("refresh");
+  f.field("name").value = "retained snapshot";
+  await f.click("save");
+  assert.equal(f.storage.current().entries.length, 1);
+  assert.equal(f.field("select").value, id(21));
+  assert.match(f.field("status").textContent, /控えを保存しました/);
+  assert.match(f.field("status").textContent, /一致を確認できません/);
+  assert.doesNotMatch(f.field("status").textContent, /操作を完了できません/);
+  assert.equal(f.field("export").disabled, false);
+  await f.click("export");
+  assert.equal(f.downloads.length, 1);
+  assert.equal(f.downloads[0].text, f.storage.current().entries[0].fileText);
+});
+
 test("inspection describes all three agents and staging is explicit", async () => {
   const f = fixture({ storage: memoryStorage(stored(1, prepared.text)) });
   await f.click("refresh");
@@ -114,6 +164,71 @@ test("changing selection clears the old inspection", async () => {
   assert.equal(f.field("detail").textContent, "");
   f.panel.dispose();
 });
+
+for (const action of ["inspect", "export", "save"]) {
+  test("selection does not inherit a previous " + action + " success message", async t => {
+    const f = fixture({ storage: memoryStorage(stored(2, prepared.text)) });
+    t.after(() => f.panel.dispose());
+    await f.click("refresh");
+    f.select(id(1));
+    f.field("name").value = "new checkpoint";
+    await f.click(action);
+    const before = f.storage.current();
+    const calls = [...f.storage.calls];
+    f.select(id(2));
+    assert.match(f.field("status").textContent, /選んだ控えの内容はまだ確認していません/);
+    assert.doesNotMatch(f.field("status").textContent, /保存しました|表示しました|ダウンロードを開始/);
+    assert.equal(f.field("detail").textContent, "");
+    assert.equal(f.field("stage").disabled, true);
+    assert.deepEqual(f.storage.current(), before);
+    assert.deepEqual(f.storage.calls, calls);
+  });
+}
+
+test("clearing selection clears the previous inspection success status", async t => {
+  const f = fixture({ storage: memoryStorage(stored(1, prepared.text)) });
+  t.after(() => f.panel.dispose());
+  await f.click("refresh");
+  f.select(id(1));
+  await f.click("inspect");
+  f.select("");
+  assert.match(f.field("status").textContent, /控えを選択してください/);
+  assert.doesNotMatch(f.field("status").textContent, /表示しました/);
+});
+
+test("archived filter does not retain a previous export success status", async t => {
+  const input = stored(2, prepared.text);
+  input.entries[1].archived = true;
+  const f = fixture({ storage: memoryStorage(input) });
+  t.after(() => f.panel.dispose());
+  await f.click("refresh");
+  f.select(id(1));
+  await f.click("export");
+  f.check("archived");
+  assert.match(f.field("status").textContent, /控えを選択してください/);
+  f.select(id(2));
+  assert.match(f.field("status").textContent, /選んだ控えの内容はまだ確認していません/);
+  assert.equal(f.field("stage").disabled, true);
+  assert.equal(f.downloads.length, 1);
+});
+
+for (const code of ["CHECKPOINT_BLOCKED", "CHECKPOINT_CLOCK", "CHECKPOINT_VERSION"]) {
+  test("storage recovery preserves page-local history before any reload: " + code, async t => {
+    const f = fixture({ storage: memoryStorage(stored(1, prepared.text)) });
+    t.after(() => f.panel.dispose());
+    const before = f.storage.current();
+    f.storage.onRead(() => { throw new CheckpointError(code); });
+    await f.click("refresh");
+    const message = f.field("status").textContent;
+    assert.match(message, /ページを閉じたり再読み込みしたりせず/);
+    assert.match(message, /ファイル/);
+    assert.match(message, /保存完了/);
+    assert.deepEqual(f.storage.current(), before);
+    assert.deepEqual(f.storage.calls, ["read"]);
+    assert.equal(f.downloads.length, 0);
+    assert.equal(f.staged.length, 0);
+  });
+}
 
 test("placeholder selection disables destructive and restore controls", async () => {
   const f = fixture({ storage: memoryStorage(stored(1, prepared.text)) });

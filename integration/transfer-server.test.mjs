@@ -55,7 +55,7 @@ test("transfer server: complete import graph resolves on localhost", async () =>
       const path = pending.pop();
       if (visited.has(path)) continue;
       visited.add(path);
-      assert.ok(visited.size < 190, "Unexpected dependency expansion"); // One additional security-data module.
+      assert.ok(visited.size < 196, "Unexpected dependency expansion"); // Proposal modules, historical codec and same-origin client.
       const response = await fetch(base + path);
       assert.equal(response.status, 200, path);
       const source = await response.text();
@@ -68,6 +68,7 @@ test("transfer server: complete import graph resolves on localhost", async () =>
     assert.ok(visited.has("/src/transfer-reader.js"));
     assert.ok(visited.has("/src/transfer-archive-file.js"));
     assert.ok(visited.has("/src/wallet-session.js"));
+    assert.ok(visited.has("/src/wallet-connection-guidance.js"));
     for (const name of ["model", "engine", "file", "view", "export", "controller", "diagnostics"]) {
       assert.ok(visited.has("/src/report-set-" + name + ".js"), "Missing set dependency: " + name);
     }
@@ -82,8 +83,17 @@ test("transfer server: complete import graph resolves on localhost", async () =>
 
 test("transfer server: main demo includes real panel but no synthetic data script", async () => {
   await served(false, async base => {
-    const html = await (await fetch(base)).text();
-    assert.match(html, /\.transfer-panel/);
+    const page = await fetch(base);
+    assert.equal(page.status, 200);
+    const html = await page.text();
+    const stylesheet = html.match(/<link\s+rel="stylesheet"\s+href="(\/examples\/wallet-demo\.css)"\s*>/);
+    assert.ok(stylesheet, "Production page links the external wallet stylesheet");
+    const css = await fetch(new URL(stylesheet[1], base));
+    assert.equal(css.status, 200);
+    assert.equal(css.headers.get("content-type"), "text/css; charset=utf-8");
+    assert.equal(css.headers.get("cache-control"), "no-store");
+    assert.equal(css.headers.get("x-content-type-options"), "nosniff");
+    assert.match(await css.text(), /\.transfer-panel/);
     assert.match(html, /送受信履歴/);
     assert.ok(!html.includes("transfer-demo.js"));
   });

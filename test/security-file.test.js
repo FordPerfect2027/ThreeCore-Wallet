@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readSecurityFileText, readFormatFileText, FILE_SECURITY_LIMIT } from "../src/security-file.js";
+import { createFileReadService } from "../src/file-read-service.js";
+import { manualTime, microtasks } from "./helpers/secure-lifecycle-time.js";
 
 const bytes = text => new TextEncoder().encode(text);
 const errorCode = code => error => error.code === code;
@@ -75,13 +77,40 @@ test("streamed BOM follows the established file decoder behavior", async () => {
   assert.equal(await readSecurityFileText(streamFile([data.slice(0, 2), data.slice(2)])), "{}");
 });
 
-test("a stream that never settles is bounded by the overall deadline", async () => {
-  let cancelled = 0;
+test("a stream that never settles is bounded by the overall deadline", async t => {
+  const time = manualTime(), service = createFileReadService(time.options);
+  let cancelled = 0, released = 0, started = 0, settle;
+  const stalled = new Promise(resolve => { settle = resolve; });
+  t.after(async () => { service.dispose(); settle({ done: true }); await microtasks(); });
   const file = { size: 1, stream: () => ({ getReader: () => ({
-    read: () => new Promise(() => {}), cancel() { cancelled++; }, releaseLock() {},
+    read() { started++; return stalled; },
+    cancel() { cancelled++; }, releaseLock() { released++; },
   }) }) };
-  await assert.rejects(readSecurityFileText(file, { timeoutMs: 10 }), errorCode("FILE_TIMEOUT"));
-  assert.ok(cancelled >= 1);
+  const pending = service.readText(file, { timeoutMs: 10 });
+  await microtasks();
+  assert.equal(started, 1);
+  time.advance(10); time.flush();
+  await assert.rejects(pending, errorCode("FILE_TIMEOUT"));
+  assert.equal(cancelled, 1);
+  assert.equal(released, 1);
+  assert.equal(service.state().timedOut, 1);
+  assert.equal(service.state().completed, 0);
+});
+
+test("deadline expiring before the worker starts does not open a reader to cancel", async t => {
+  const time = manualTime(), service = createFileReadService(time.options);
+  t.after(() => service.dispose());
+  let opened = 0;
+  const file = { size: 1, stream() { opened++; throw Error("must not open"); } };
+  const pending = service.readText(file, { timeoutMs: 10 });
+  // Model a busy host delaying the worker past the deadline; no real sleep.
+  time.advance(10); time.flush();
+  await assert.rejects(pending, errorCode("FILE_TIMEOUT"));
+  await microtasks();
+  assert.equal(opened, 0);
+  assert.equal(service.state().active, 0);
+  assert.equal(service.state().timedOut, 1);
+  assert.equal(service.state().completed, 0);
 });
 
 test("abort settles a pending stream without waiting for the provider", async () => {

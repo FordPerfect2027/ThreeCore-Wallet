@@ -1,13 +1,27 @@
 import { prepareHistoryDownload } from "../src/history-file.js";
 import { offerHistoryDownload } from "./history-files.js";
+import { requireSyncExport } from "../src/export-policy.js";
 
 /** Card-local single-step recovery, with separate review and explicit apply. */
 export function mountHistoryRecovery({ document, parent, agent, recovery, onRestore,
   onCopyArchive, download = offerHistoryDownload }) {
   let disposed = false;
+  let generation = 0;
   let previewId = null;
   let renderedRecoveryId = null;
   const stops = [];
+  const current = id => !disposed && id === generation;
+  function exportAction(run) {
+    const id = ++generation;
+    try { run(id); }
+    catch (error) {
+      if (current(id)) throw error;
+    }
+  }
+  function deliver(prepared, id) {
+    requireSyncExport(download({ document, prepared }));
+    return current(id);
+  }
   const section = document.createElement("section");
   section.className = "history-recovery-panel";
   function node(tag, name, text) {
@@ -61,14 +75,15 @@ export function mountHistoryRecovery({ document, parent, agent, recovery, onRest
     status.textContent = "直前の操作前の履歴へ戻しました。接続・署名・送金は行っていません。";
   });
   apply.disabled = true;
-  const save = button("history-recovery-save", "操作前の履歴をファイル保存", () => {
+  const save = button("history-recovery-save", "操作前の履歴をファイル保存", () => exportAction(id => {
     const state = recovery.state();
+    if (!current(id)) return;
     if (state.recoveryId !== renderedRecoveryId) throw Error("Recovery changed");
     const prepared = prepareHistoryDownload(recovery.exportText(), agent, state.currentRevision);
-    download({ document, prepared: Object.freeze({ ...prepared,
-      filename: prepared.filename.replace(".json", "-before-change.json") }) });
+    if (!current(id) || !deliver(Object.freeze({ ...prepared,
+      filename: prepared.filename.replace(".json", "-before-change.json") }), id)) return;
     status.textContent = "操作前の履歴のダウンロードを開始しました。現在の履歴は変更していません。";
-  });
+  }));
   const copy = button("history-recovery-copy", "操作前のJSONを読み込み欄へ出す", () => {
     const state = recovery.state();
     if (state.recoveryId !== renderedRecoveryId) throw Error("Recovery changed");
@@ -87,6 +102,7 @@ export function mountHistoryRecovery({ document, parent, agent, recovery, onRest
     status.textContent = "復元用の控えだけを破棄しました。現在の履歴は保持しています。";
   });
   function invalidate() {
+    generation++;
     previewId = null;
     recovery.cancelPreview();
     details.textContent = "";

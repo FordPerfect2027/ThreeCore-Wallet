@@ -5,9 +5,10 @@ import { prepareWorkspaceFile, createWorkspaceFileReader, createWorkspaceBackupT
 import { describeWorkspaceOverview, describeWorkspacePreview, describeWorkspaceUndo } from "../src/workspace-overview.js";
 import { offerHistoryDownload } from "./history-files.js";
 import { observeCallbackResult } from "../src/security-callback.js";
+import { readOwnErrorCode } from "../src/provider-error.js";
 
 const ERRORS = Object.freeze({
-  WORKSPACE_DUPLICATE: "複数のカードに同じ公開アドレスがあります。別々のアドレスを設定してください。",
+  WORKSPACE_DUPLICATE: "現在のカード設定で同じ公開アドレスが重複しています。各カードに別々のアドレスを設定してから保存してください。保存履歴は変更していません。",
   WORKSPACE_ADDRESS: "公開アドレスまたはトークンの契約アドレスの形式を確認してください。",
   WORKSPACE_TOKENS: "トークン一覧は重複なしの32件以内にしてください。",
   WORKSPACE_AGENT: "DAT・EMA・CAWELONと履歴の組み合わせを確認してください。",
@@ -80,23 +81,28 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     wrapper.append(item);
     return wrapper;
   }
-  function errorMessage(error) {
-    return ERRORS[error?.code] ?? "バックアップの形式や入力を確認してください。操作は完了していません。";
+  function errorMessage(error, context = "current") {
+    const code = readOwnErrorCode(error);
+    if (context === "import" && code === "WORKSPACE_DUPLICATE") {
+      return "読み込むバックアップ内の設定で同じ公開アドレスが重複しています。履歴だけを選んでも一括復元できません。画面の設定を変えても、このバックアップの重複は解消しません。元のファイルやJSONを保管してください。現在の設定と保存履歴は変更していません。";
+    }
+    return typeof code === "string" && Object.hasOwn(ERRORS, code) ? ERRORS[code]
+      : "バックアップの形式や入力を確認してください。操作は完了していません。";
   }
-  function handle(action) {
+  function handle(action, errorContext) {
     try { action(); }
     catch (error) {
       if (disposed) return;
       clearReview();
       if (disposed) return;
-      status.textContent = errorMessage(error);
+      status.textContent = errorMessage(error, errorContext);
       controls();
     }
   }
-  function button(name, value, action) {
+  function button(name, value, action, errorContext) {
     const item = node("button", name, value);
     item.type = "button";
-    listen(item, "click", () => handle(action));
+    listen(item, "click", () => handle(action, errorContext));
     return item;
   }
   function checkbox(name, value, checked = false) {
@@ -156,7 +162,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     detail.textContent = describeWorkspacePreview(preview);
     status.textContent = "まだ変更していません。各カードの変更内容を確認してください。";
     controls();
-  });
+  }, "import");
   const apply = button("apply", "確認した内容を一括復元", () => {
     if (!stagedReady()) return;
     if (!preview || !confirmed.item.checked || (preview.removed && !removal.item.checked)) return;
@@ -169,7 +175,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
     status.textContent = result.changed ? "一括復元しました。必要なカードで改めて接続してください。" : "設定と履歴に変更はありませんでした。";
     updateBackup();
     controls();
-  });
+  }, "import");
   const cancel = button("cancel", "読み込み・プレビューを取り消す", () => {
     const id = ++saveGeneration;
     saving = false;
@@ -221,7 +227,7 @@ export function mountWorkspacePanel({ document, parent, readDraft, writeDraft, p
       json.value = state.result.text;
       status.textContent = "ファイルの破損確認が一致しました。本人・所有・安全性の確認ではありません。変更内容をプレビューしてください。";
     } else if (state.phase === "error") {
-      status.textContent = errorMessage({ code: state.errorCode });
+      status.textContent = errorMessage({ code: state.errorCode }, "import");
     }
     controls();
   } });

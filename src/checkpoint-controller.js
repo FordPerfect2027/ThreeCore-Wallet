@@ -1,11 +1,12 @@
-import { checkpointFail, CheckpointError, checkpointLabel, checkpointId, checkpointTime,
+import { checkpointFail, checkpointLabel, checkpointId, checkpointTime,
   checkpointMetadata, validateCheckpointDocument } from "./checkpoint-model.js";
-import { workspaceDraftKey, workspaceFromDraft, workspaceToDraft } from "./workspace-format.js";
+import { captureWorkspaceDraft, workspaceDraftKey, workspaceFromDraft, workspaceToDraft } from "./workspace-format.js";
 import { prepareWorkspaceFile, decodeWorkspaceFile } from "./workspace-file.js";
 import { describeWorkspaceOverview } from "./workspace-overview.js";
 import { prepareCheckpointCollection, decodeCheckpointCollection,
   reviewCheckpointImport, describeCheckpointImport } from "./checkpoint-transfer.js";
 import { consumeCallback, observeCallbackResult } from "./security-callback.js";
+import { ownStorageData } from "./storage-guard-policy.js";
 
 /** Explicit actions only; the only restore action stages data for another preview. */
 export function createCheckpointController({ storage, readDraft, onStage, download,
@@ -49,6 +50,13 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     const receipt = callback(value);
     if (observeCallbackResult(receipt) !== "synchronous" || receipt === false) checkpointFail(code);
   }
+  function callbackValue(callback, validate, code) {
+    const value = callback();
+    if (observeCallbackResult(value) !== "synchronous") checkpointFail(code);
+    return validate(value);
+  }
+  const readTime = () => callbackValue(now, checkpointTime, "CHECKPOINT_TIME");
+  const readId = () => callbackValue(createId, checkpointId, "CHECKPOINT_ID");
   function begin(action) {
     if (disposed) checkpointFail("CHECKPOINT_CLOSED");
     if (busy()) checkpointFail("CHECKPOINT_BUSY");
@@ -62,6 +70,15 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     return token;
   }
   function alive(token) { return !disposed && active?.token === token; }
+  function readCurrentDraft(token) {
+    if (!alive(token)) checkpointFail("CHECKPOINT_CANCELLED");
+    const value = readDraft();
+    if (observeCallbackResult(value) !== "synchronous") checkpointFail("CHECKPOINT_DRAFT_CHANGED");
+    if (!alive(token)) checkpointFail("CHECKPOINT_CANCELLED");
+    const captured = captureWorkspaceDraft(value);
+    if (!alive(token)) checkpointFail("CHECKPOINT_CANCELLED");
+    return captured;
+  }
   function update(value) {
     document = validateCheckpointDocument(value);
     if (!document.entries.some(entry => entry.id === selectedId)) selectedId = null;
@@ -87,8 +104,10 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     } catch (error) {
       if (token === undefined || !alive(token)) return false;
       phase = "error";
-      errorCode = error instanceof CheckpointError || typeof error?.code === "string"
-        ? error.code : "CHECKPOINT_ACTION";
+      // Exception inspection must not throw a second exception or invoke
+      // accessor/prototype hooks supplied by an adapter.
+      const code = ownStorageData(error, "code");
+      errorCode = typeof code === "string" ? code : "CHECKPOINT_ACTION";
       inspected = null;
       importReview = null;
       // A stale document must be reloaded before any further mutation.
@@ -115,11 +134,37 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     return operate(kind, async token => {
       const entry = selection();
       const operation = kind === "purge" ? { kind, id: entry.id, confirmed } :
-        kind === "rename" ? { kind, id: entry.id, label: checkpointLabel(label), time: checkpointTime(now()) } :
-          { kind, id: entry.id, time: checkpointTime(now()) };
+        kind === "rename" ? { kind, id: entry.id, label: checkpointLabel(label), time: readTime() } :
+          { kind, id: entry.id, time: readTime() };
       const result = await storage.change(document.revision, operation, { canCommit: () => alive(token), signal: active?.aborter.signal });
       if (alive(token)) update(result);
     });
+  }
+  async function saveDraft(token, label, draft, capturedTime) {
+    const normalizedLabel = checkpointLabel(label);
+    const key = workspaceDraftKey(draft);
+    const prepared = await prepareWorkspaceFile(workspaceFromDraft(draft), { subtle });
+    if (!alive(token)) return;
+    const id = readId();
+    if (!alive(token)) return;
+    const time = capturedTime ?? readTime();
+    if (!alive(token)) return;
+    const canCommit = () => {
+      if (!alive(token)) return false;
+      if (workspaceDraftKey(readCurrentDraft(token)) !== key) checkpointFail("CHECKPOINT_DRAFT_CHANGED");
+      return alive(token);
+    };
+    if (!canCommit()) return;
+    const result = await storage.change(document.revision,
+      { kind: "save", id, label: normalizedLabel, time, fileText: prepared.text }, { canCommit, signal: active?.aborter.signal });
+    if (alive(token)) {
+      update(result);
+      selectedId = id;
+      // A confirmed write survives failures in the subsequent live-form check.
+      changedDuringSave = true;
+      try { changedDuringSave = workspaceDraftKey(readCurrentDraft(token)) !== key; }
+      catch { /* Keep the saved checkpoint; the current form is unverified. */ }
+    }
   }
   return Object.freeze({
     state,
@@ -164,25 +209,19 @@ export function createCheckpointController({ storage, readDraft, onStage, downlo
     save: label => operate("save", async token => {
       ready();
       const normalizedLabel = checkpointLabel(label);
-      const draft = readDraft();
-      const key = workspaceDraftKey(draft);
-      const prepared = await prepareWorkspaceFile(workspaceFromDraft(draft), { subtle });
+      const draft = readCurrentDraft(token);
+      await saveDraft(token, normalizedLabel, draft);
+    }),
+    // One explicit click, one operation token. Loading metadata never permits
+    // saving a different live form from the one present at the initial click.
+    saveQuick: () => operate("save", async token => {
+      const draft = readCurrentDraft(token);
+      const time = readTime();
       if (!alive(token)) return;
-      const id = checkpointId(createId());
-      const time = checkpointTime(now());
-      const canCommit = () => {
-        if (!alive(token)) return false;
-        if (workspaceDraftKey(readDraft()) !== key) checkpointFail("CHECKPOINT_DRAFT_CHANGED");
-        return true;
-      };
-      canCommit();
-      const result = await storage.change(document.revision,
-        { kind: "save", id, label: normalizedLabel, time, fileText: prepared.text }, { canCommit, signal: active?.aborter.signal });
-      if (alive(token)) {
-        update(result);
-        selectedId = id;
-        changedDuringSave = workspaceDraftKey(readDraft()) !== key;
-      }
+      const current = await storage.read({ signal: active?.aborter.signal });
+      if (!alive(token)) return;
+      update(current);
+      await saveDraft(token, "ThreeCore " + time, draft, time);
     }),
     select(id) {
       if (disposed || busy()) return false;

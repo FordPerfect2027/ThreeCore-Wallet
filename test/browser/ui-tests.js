@@ -31,10 +31,17 @@ import { registerHistoryRecoveryUITests } from "/test/browser/history-recovery-u
 import { registerWalletSetupUITests } from "/test/browser/wallet-setup-ui-tests.js";
 import { registerHistoryReviewUITests } from "/test/browser/history-review-ui-tests.js";
 import { registerHistoryFileUITests } from "/test/browser/history-file-ui-tests.js";
+import { registerHistoryDownloadBoundaryUITests } from "/test/browser/history-download-boundary-ui-tests.js";
 import { registerHistoryUITests } from "/test/browser/history-ui-tests.js";
 import { mountWalletDemo } from "/examples/wallet-demo.js";
 import { readErrorMessage } from "/src/provider-error.js";
 import { ThreeCoreWalletSession } from "/src/wallet-session.js";
+import { createWalletCardController } from "/src/wallet-card-controller.js";
+import { createWalletReadScope } from "/src/wallet-read-scope.js";
+import { observeWalletProvider, WALLET_EVENT_NAMES } from "/src/provider-events.js";
+import { createAgentProposalClient } from "/src/agent-proposal-client.js";
+import { createAgentReadPolicyRegistry } from "/src/agent-read-policy-registry.js";
+import { mountAgentProposalPanel } from "/examples/agent-proposal-panel.js";
 
 const A = "0x1111111111111111111111111111111111111111";
 const B = "0x2222222222222222222222222222222222222222";
@@ -112,6 +119,274 @@ function fixture(override = () => undefined, { legacy = true, announced = false,
 }
 const tests = [];
 function test(name, run) { tests.push({ name, run }); }
+// The global harness must observe zero unhandledrejection events from these
+// deliberately rejected adapters. No real wallet or network is consulted.
+const rejectedWalletCallback = kind => kind === "promise"
+  ? Promise.reject(Error("Synthetic wallet callback failure"))
+  : { async then() { throw Error("Synthetic wallet callback failure"); } };
+for (const agent of ["DAT", "EMA", "CAWELON"]) for (const kind of ["promise", "async-then"]) {
+  test(`wallet-callback: ${agent} rejected ${kind} access guard remains disconnected without RPC`, async () => {
+    let calls = 0, checks = 0;
+    const session = new ThreeCoreWalletSession({ agent, expectedAccount: A, chainId: 84532,
+      siteOrigin: location.origin, approvedOrigins: [location.origin],
+      provider: { request() { calls++; throw Error("Unexpected synthetic RPC"); } },
+      isAccessAllowed: () => { checks++; return rejectedWalletCallback(kind); },
+    });
+    try {
+      let code;
+      try { await session.connect(); } catch (error) { code = error.code; }
+      assert(code === "ACCESS_LOCKED", "Async access guard did not fail closed");
+      await new Promise(resolve => setTimeout(resolve, 20));
+      assert(checks === 1, "Rejected guard was not exercised exactly once");
+      assert(calls === 0 && session.state.connected === false, "Rejected guard authorized wallet access");
+    } finally { session.disconnect(); }
+  });
+  test(`wallet-callback: ${agent} rejected ${kind} observer and cleanup cannot revive a stopped card`, async () => {
+    let connected = false, cleanups = 0, requests = 0;
+    const observedPhases = [];
+    const controller = createWalletCardController({ agent, siteOrigin: location.origin,
+      onChange: state => { observedPhases.push(state.phase); return rejectedWalletCallback(kind); },
+      createSession: () => ({
+        get state() { return { agent, account: A, chainId: 84532, siteOrigin: location.origin,
+          connectionEpoch: 1, connected, canSign: false, canSendTransactions: false, canBridge: false }; },
+        async connect() { connected = true; },
+        disconnect() { connected = false; cleanups++; return rejectedWalletCallback(kind); },
+      }),
+    });
+    try {
+      assert(await controller.connect({ account: A, chainId: 84532,
+        provider: { request() { requests++; throw Error("Unexpected synthetic RPC"); } } }), "Synthetic card did not connect");
+      assert(controller.disconnect() === false, "Asynchronous cleanup was reported as synchronously completed");
+      await new Promise(resolve => setTimeout(resolve, 20));
+      assert(cleanups === 1 && observedPhases.at(-1) === "disconnected", "Final stopped state was not delivered to the observer");
+      assert(controller.state.phase === "disconnected" && controller.state.connection === null,
+        "Rejected callback revived the disconnected card");
+      assert(requests === 0, "Callback failure made an RPC request");
+    } finally { controller.dispose(); }
+  });
+}
+for (const action of ["on", "removeListener"]) for (const kind of ["promise", "async-then"]) {
+  test(`wallet-callback: rejected ${kind} provider ${action} leaves retained listeners inert`, async () => {
+    const listeners = new Map(), retained = []; let received = 0, removed = 0, observer;
+    const provider = {
+      on(name, callback) {
+        listeners.set(name, callback); retained.push(callback);
+        return action === "on" ? rejectedWalletCallback(kind) : provider;
+      },
+      removeListener(name, callback) {
+        removed++;
+        if (listeners.get(name) === callback) listeners.delete(name);
+        return action === "removeListener" ? rejectedWalletCallback(kind) : provider;
+      },
+    };
+    const handlers = Object.fromEntries(WALLET_EVENT_NAMES.map(name => [name, () => { received++; }]));
+    try {
+      let code;
+      try { observer = observeWalletProvider(provider, handlers); } catch (error) { code = error.code; }
+      if (action === "on") assert(code === "PROVIDER_EVENT_FAILURE", "Async registration was accepted");
+      else { assert(observer, "Synchronous registration failed"); observer.dispose(); }
+      assert(retained.length === (action === "on" ? 1 : WALLET_EVENT_NAMES.length), "Registration callback was not exercised");
+      assert(removed === retained.length, "Each attempted listener must be removed exactly once");
+      for (const callback of retained) callback([A]);
+      await new Promise(resolve => setTimeout(resolve, 20));
+      assert(listeners.size === 0 && received === 0, "Stopped provider event remained active");
+    } finally { observer?.dispose(); }
+  });
+}
+for (const callback of ["isCurrent", "onSettled"]) for (const kind of ["promise", "async-then"]) {
+  test(`wallet-callback: rejected ${kind} read-scope ${callback} preserves cancellation authority`, async () => {
+    let operations = 0, callbacks = 0;
+    const scope = createWalletReadScope({ isCurrent: () => true,
+      [callback]: () => { callbacks++; return rejectedWalletCallback(kind); } });
+    try {
+      let result, code;
+      try { result = await scope.invoke(() => { operations++; return 42; }); }
+      catch (error) { code = error.code; }
+      if (callback === "isCurrent") assert(code === "STALE_VIEW" && operations === 0 && scope.state().closed,
+        "Async current-state check authorized a read");
+      else assert(result === 42 && operations === 1, "Advisory callback changed the accepted result");
+      await new Promise(resolve => setTimeout(resolve, 20));
+      assert(callbacks === 1 && scope.state().pending === 0, "Callback leaked work or caused a retry");
+      scope.cancel();
+      assert(scope.state().closed, "Stop did not remain authoritative");
+    } finally { scope.cancel(); }
+  });
+}
+for (const agent of ["DAT", "EMA", "CAWELON"]) for (const action of ["cancel", "revoke", "invalidate", "dispose"])
+for (const kind of ["promise", "async-then"]) {
+  test(`agent-proposal: ${agent} ${action} observes rejected ${kind} stop callback`, async () => {
+    const parent = document.createElement("div"), gate = deferred();
+    document.body.append(parent);
+    let cancellations = 0, reads = 0;
+    const connection = { agent, account: A, chainId: 84532, siteOrigin: location.origin,
+      connectionEpoch: 1, connected: true, canSign: false, canSendTransactions: false, canBridge: false };
+    const panel = mountAgentProposalPanel({ document, parent, agent,
+      registry: createAgentReadPolicyRegistry(), getContext: () => ({ connection, tokenAddress: TOKEN, spenderAddress: SPENDER }),
+      read: () => { reads++; return gate.promise; },
+      onCancel: () => { cancellations++; return kind === "promise" ? Promise.reject(Error("Synthetic stop failure")) :
+        { async then() { throw Error("Synthetic stop failure"); } }; },
+    });
+    const q = name => parent.querySelector(".agent-proposal-" + name);
+    try {
+      q("apply").click(); q("build").click(); q("inspect").click();
+      assert(reads === 1, "Read did not start");
+      const result = q("result"), previous = result.textContent;
+      if (action === "dispose" || action === "invalidate") panel[action](); else q(action).click();
+      gate.resolve(undefined);
+      await new Promise(resolve => setTimeout(resolve, 20));
+      assert(cancellations === 1 && reads === 1, "Stop retried work or invoked cancellation twice");
+      assert(result.textContent === previous, "Late read changed evidence");
+      if (action !== "dispose") assert(q("panel").getAttribute("aria-busy") === "false", "Stopped panel remained busy");
+    } finally { panel.dispose(); parent.remove(); }
+  });
+}
+
+for (const agent of ["DAT", "EMA", "CAWELON"]) {
+  test(`agent-proposal: ${agent} opaque transport failure recovers without automatic retry`, async () => {
+    const registry = createAgentReadPolicyRegistry(), now = Date.now();
+    let broken = true, calls = 0, staged = 0;
+    const pair = Proxy.revocable({}, {}); pair.revoke();
+    const sessionState = { agent, account: A, chainId: 84532, siteOrigin: location.origin,
+      connectionEpoch: 1, connected: true, canSign: false, canSendTransactions: false, canBridge: false };
+    registry.set(agent, JSON.stringify({ schema: "threecore-agent-read-config-v1", agent, account: A,
+      chainId: 84532, siteOrigin: location.origin, maxProposalAgeMs: 60000,
+      targets: [{ tokenAddress: TOKEN, spenderAddress: SPENDER }] }));
+    const client = createAgentProposalClient({ agent, origin: location.origin, enabled: true, now: () => now,
+      readContext: () => ({ sessionState, policyText: registry.readPolicyText(agent) }),
+      stageProposal: () => { staged++; return true; },
+      fetchImpl: () => {
+        calls++; if (broken) throw pair.proxy;
+        return new Response(JSON.stringify({ status: "abstained", rationale: "Synthetic abstention",
+          proposalText: null, executed: false, grantsAuthority: false }), { headers: { "content-type": "application/json" } });
+      },
+    });
+    try {
+      assert(client.acceptGrant({ agent, token: "a".repeat(64), expiresAtMs: now + 120000,
+        endpoint: location.origin + "/api/agent/proposal" }), "Grant rejected");
+      const input = { requestId: "opaque-failure", objective: "Inspect configured target" };
+      assert((await client.request(input)).errorCode === "CLIENT_REQUEST_FAILED", "Exception escaped request boundary");
+      assert(client.state.status === "rejected", "Client remained requesting");
+      await new Promise(resolve => setTimeout(resolve, 20));
+      assert(calls === 1 && staged === 0, "Unexpected retry or staging");
+      broken = false;
+      assert((await client.request(input)).status === "abstained", "Explicit retry failed");
+      assert(calls === 2 && staged === 0, "Abstention executed an action");
+    } finally { client.dispose(); }
+  });
+  test(`agent-proposal: ${agent} cancellation releases native late response without staging`, async () => {
+    const registry = createAgentReadPolicyRegistry(), started = deferred(), late = deferred();
+    const now = Date.now(); let cancelled = 0, staged = 0, requests = 0;
+    const sessionState = { agent, account: A, chainId: 84532, siteOrigin: location.origin,
+      connectionEpoch: 1, connected: true, canSign: false, canSendTransactions: false, canBridge: false };
+    registry.set(agent, JSON.stringify({ schema: "threecore-agent-read-config-v1", agent, account: A,
+      chainId: 84532, siteOrigin: location.origin, maxProposalAgeMs: 60000,
+      targets: [{ tokenAddress: TOKEN, spenderAddress: SPENDER }] }));
+    const client = createAgentProposalClient({ agent, origin: location.origin, enabled: true,
+      now: () => now,
+      readContext: () => ({ sessionState, policyText: registry.readPolicyText(agent) }),
+      stageProposal: () => { staged++; return true; },
+      fetchImpl: () => { requests++; started.resolve(); return late.promise; },
+    });
+    try {
+      assert(client.acceptGrant({ agent, token: "a".repeat(64), expiresAtMs: now + 120000,
+        endpoint: location.origin + "/api/agent/proposal" }), "Synthetic grant rejected");
+      const work = client.request({ requestId: "native-late-response", objective: "Inspect configured target" });
+      await started.promise;
+      client.cancel();
+      assert((await work).status === "rejected", "Cancelled request reported success");
+      late.resolve(new Response(new ReadableStream({ cancel() { cancelled++; } }),
+        { headers: { "content-type": "application/json" } }));
+      await waitFor(() => cancelled === 1);
+      assert(staged === 0 && requests === 1, "Late response staged or retried");
+      assert(client.state.status === "cancelled", "Late cleanup changed status");
+    } finally { client.dispose(); }
+  });
+}
+
+test("agent-proposal: mounted wallet flow validates a proposal and preserves evidence after account change", async make => {
+  const f = make();
+  f.input(".token", TOKEN); f.input(".spender", SPENDER);
+  f.field(".agent-proposal-panel").open = true;
+  assert(f.field(".agent-proposal-inspect").disabled, "No proposal may execute on mount");
+  await f.connect();
+  f.field(".agent-proposal-apply").click();
+  f.field(".agent-proposal-build").click();
+  assert(f.field(".agent-proposal-draft").value.includes("not an AI decision"), "Local template must not be called model output");
+  f.field(".agent-proposal-inspect").click();
+  await waitFor(() => f.field(".agent-proposal-status").textContent.includes("読み取りを確認"));
+  const evidence = f.field(".agent-proposal-result").textContent;
+  const report = JSON.parse(evidence);
+  assert(report.result.observation.account === A, "Read must bind the connected account");
+  assert(report.result.transactionExecuted === false, "No transaction may be reported");
+  assert(!f.output().includes("undefined"), "Card summary must render the nested observation");
+  f.provider.emit("accountsChanged", [B]);
+  await waitFor(() => f.field(".agent-proposal-status").textContent.includes("撤回"));
+  assert(f.field(".agent-proposal-inspect").disabled, "Account change must revoke the local policy");
+  assert(f.field(".agent-proposal-result").textContent === evidence, "Historical evidence must remain visible");
+  assert(!f.field(".agent-proposal-save").disabled, "Historical evidence must remain exportable");
+});
+
+test("agent-proposal: edited token field revokes registration without another wallet call", async make => {
+  const f = make(); f.input(".token", TOKEN); f.input(".spender", SPENDER); await f.connect();
+  f.field(".agent-proposal-apply").click(); f.field(".agent-proposal-build").click();
+  const before = f.calls.length;
+  f.input(".token", SPENDER);
+  assert(f.field(".agent-proposal-inspect").disabled, "Changing targets must invalidate the proposal");
+  assert(f.calls.length === before, "Editing must not perform an RPC");
+});
+
+test("agent-proposal: saved File previews and restores without restoring connection", async make => {
+  const f = make(); await f.connect();
+  f.field(".agent-proposal-apply").click(); f.field(".agent-proposal-build").click();
+  f.field(".agent-proposal-inspect").click();
+  await waitFor(() => f.field(".agent-proposal-status").textContent.includes("読み取りを確認"));
+  const evidence = f.field(".agent-proposal-result").textContent;
+  f.field(".disconnect").click();
+  const before = f.calls.length;
+  const transfer = new DataTransfer();
+  transfer.items.add(new File([evidence], "proposal-record.json", { type: "application/json" }));
+  f.field(".agent-proposal-file").files = transfer.files;
+  f.field(".agent-proposal-file").dispatchEvent(new Event("change", { bubbles: true }));
+  await waitFor(() => !f.field(".agent-proposal-restore").disabled);
+  assert(f.field(".agent-proposal-import-preview").textContent.includes("過去の記録"), "Historical preview required");
+  f.field(".agent-proposal-restore").click();
+  assert(f.field(".agent-proposal-result").textContent === evidence, "Evidence round trip must preserve content");
+  assert(f.field(".agent-proposal-status").textContent.includes("権限は復元していません"), "Import must not imply restored authority");
+  assert(f.field(".agent-proposal-inspect").disabled, "Import must not register policy");
+  assert(f.calls.length === before, "File import must not make wallet requests");
+});
+
+test("別カードの入力途中アドレスは正しいカードの接続を妨げない", async use => {
+  const f = use();
+  const peer = document.querySelector('[data-agent="EMA"] .account');
+  peer.value = "0x";
+  peer.dispatchEvent(new Event("input", { bubbles: true }));
+  await f.connect();
+  assert(f.output().includes("接続済み"), "Valid card did not connect");
+  assert(peer.value === "0x" && f.field(".account").value === A, "Assignments were changed");
+  assert(f.calls.filter(c => c.method === "eth_requestAccounts").length === 1, "Unexpected permission count");
+});
+
+test("別カードと同じ完全なアドレスはWalletへの要求前に止める", async use => {
+  const f = use();
+  const peer = document.querySelector('[data-agent="EMA"] .account');
+  peer.value = A;
+  peer.dispatchEvent(new Event("input", { bubbles: true }));
+  f.field(".connect").click();
+  await waitFor(() => f.output().includes("同じ公開アドレス"));
+  assert(f.calls.length === 0, "Duplicate assignment reached the wallet");
+  assert(f.field(".read").disabled, "Duplicate assignment enabled reads");
+});
+
+test("サイト許可アカウントの不一致は設定を保持して日本語で案内する", async use => {
+  const f = use(({ method }) => method === "eth_requestAccounts" ? [B] : undefined);
+  f.field(".connect").click();
+  await waitFor(() => f.output().includes("このサイトへの接続許可"));
+  assert(f.output().includes(A), "Expected configured address was omitted");
+  assert(f.field(".account").value === A, "Configured account was silently reassigned");
+  assert(f.field(".read").disabled, "Mismatch enabled reads");
+  assert(f.calls.every(c => ["eth_chainId", "eth_requestAccounts"].includes(c.method)), "Mismatch issued an extra operation");
+});
 
 test("EIP-6963のみでも検出したWalletを選んで接続・読み取りできる", async use => {
   const f = use(undefined, { legacy: false, announced: true });
@@ -284,7 +559,8 @@ test("他エージェントの重複アドレスは接続要求の前に拒否�
   ema.querySelector(".chain").value = "8453";
   const count = f.calls.length;
   ema.querySelector(".connect").click();
-  assert(ema.querySelector("output").textContent.includes("同一"), "Duplicate agent account accepted");
+  assert(ema.querySelector("output").textContent.includes("同じ公開アドレス"), "Duplicate agent account accepted");
+  assert(ema.querySelector(".read").disabled, "Duplicate assignment enabled reads");
   assert(f.calls.length === count && f.output().includes("接続済み"), "Another card's session was changed");
 });
 
@@ -1213,6 +1489,7 @@ registerSecurityUITests(test);
 registerTabGuardUITests(test);
 registerHistoryUITests(test);
 registerHistoryFileUITests(test);
+registerHistoryDownloadBoundaryUITests(test);
 registerHistoryReviewUITests(test);
 registerHistoryRecoveryUITests(test);
 registerWalletSetupUITests(test);
@@ -1237,7 +1514,7 @@ registerAccessLifecycleUITests(test);
 registerAcceptanceUITests(test);
 let passed = 0, failed = 0;
 const requestedSuite = new URLSearchParams(location.search).get("suite");
-const selectedTests = ["restore-confirmation", "storage-receipt", "adapter-boundary", "backup timer", "backup cleanup", "observer", "setup", "workspace", "acceptance", "access-lifecycle", "storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
+const selectedTests = ["wallet-callback", "restore-confirmation", "storage-receipt", "adapter-boundary", "backup timer", "backup cleanup", "observer", "setup", "workspace", "acceptance", "access-lifecycle", "storage-guard", "history", "checkpoint", "identity", "allowance", "transfer", "encrypted-library", "tab-guard", "rpc-supervisor", "file-read", "export-guard"].includes(requestedSuite)
   ? tests.filter(item => item.name.startsWith(requestedSuite + ":")) : tests;
 for (const { name, run } of selectedTests) {
   console.info("Starting synthetic UI case: " + name);

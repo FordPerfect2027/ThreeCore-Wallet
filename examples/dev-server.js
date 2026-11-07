@@ -1,127 +1,51 @@
 import { SECURITY_HEADERS, inspectLocalRequest } from "./security-http.js";
 import { createBaseStateRpcHandler } from "./base-state-rpc.js";
+import { WALLET_DEMO_ASSET_FILES } from "../server/wallet-demo-assets.mjs";
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const publicPaths = [
-  ...["base-state-provider", "state-rpc-http", "security-json", "security-data"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/src/security-abort.js", { file: resolve(here, "../src/security-abort.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/security-callback.js", { file: resolve(here, "../src/security-callback.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/state-notifier.js", { file: resolve(here, "../src/state-notifier.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/wallet-read-scope.js", { file: resolve(here, "../src/wallet-read-scope.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["storage-guard", "storage-guard-policy", "storage-guard-status"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/storage-guard-panel.js", { file: resolve(here, "storage-guard-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/secure-backup-status.js", { file: resolve(here, "../src/secure-backup-status.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/secure-operation-panel.js", { file: resolve(here, "secure-operation-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/secure-deadline.js", { file: resolve(here, "../src/secure-deadline.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/export-policy.js", { file: resolve(here, "../src/export-policy.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/export-payload.js", { file: resolve(here, "../src/export-payload.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/export-guard.js", { file: resolve(here, "../src/export-guard.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/export-status.js", { file: resolve(here, "../src/export-status.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/export-resource.js", { file: resolve(here, "../examples/export-resource.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/export-download.js", { file: resolve(here, "../examples/export-download.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/export-guard-panel.js", { file: resolve(here, "../examples/export-guard-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/file-read-policy.js", { file: resolve(here, "../src/file-read-policy.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/file-read-source.js", { file: resolve(here, "../src/file-read-source.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/file-read-service.js", { file: resolve(here, "../src/file-read-service.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/file-read-status.js", { file: resolve(here, "../src/file-read-status.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/file-read-panel.js", { file: resolve(here, "file-read-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/provider-event-gate.js", { file: resolve(here, "../src/provider-event-gate.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/provider-events.js", { file: resolve(here, "../src/provider-events.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["capacity", "supervisor", "status"].map(name =>
-    ["/src/rpc-" + name + ".js", { file: resolve(here, "../src/rpc-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/rpc-status-panel.js", { file: resolve(here, "rpc-status-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/protection-batch.js", { file: resolve(here, "../src/protection-batch.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["protocol", "transport", "controller"].map(name =>
-    ["/src/tab-guard-" + name + ".js", { file: resolve(here, "../src/tab-guard-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/tab-guard-panel.js", { file: resolve(here, "tab-guard-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["model", "storage", "controller", "archive"].map(name =>
-    ["/src/encrypted-library-" + name + ".js", { file: resolve(here, "../src/encrypted-library-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/encrypted-library-panel.js", { file: resolve(here, "encrypted-library-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/wallet-entry.js", { file: resolve(here, "wallet-entry.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["format", "crypto", "runner", "controller"].map(name =>
-    ["/src/secure-backup-" + name + ".js", { file: resolve(here, "../src/secure-backup-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/secure-backup-panel.js", { file: resolve(here, "secure-backup-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/secure-backup.css", { file: resolve(here, "secure-backup.css"), mime: "text/css; charset=utf-8" }],
-  ["/src/security-journal.js", { file: resolve(here, "../src/security-journal.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/security-journal-panel.js", { file: resolve(here, "security-journal-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/security-lock.js", { file: resolve(here, "../src/security-lock.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/security-panel.js", { file: resolve(here, "security-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/security.css", { file: resolve(here, "security.css"), mime: "text/css; charset=utf-8" }],
-  ...["json", "data", "file", "rpc", "provider-error"].map(name =>
-    ["/src/security-" + name + ".js", { file: resolve(here, "../src/security-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ...["model", "engine", "file", "view", "export", "controller", "diagnostics", "timeline"].map(name =>
-    ["/src/report-set-" + name + ".js", { file: resolve(here, "../src/report-set-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/report-set-panel.js", { file: resolve(here, "report-set-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/report-set-timeline-panel.js", { file: resolve(here, "report-set-timeline-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/report-set.css", { file: resolve(here, "report-set.css"), mime: "text/css; charset=utf-8" }],
-  ...["model", "storage", "file", "query", "view", "controller", "sources", "continuity"].map(name =>
-    ["/src/report-history-" + name + ".js", { file: resolve(here, "../src/report-history-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/report-history-panel.js", { file: resolve(here, "report-history-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/report-history.css", { file: resolve(here, "report-history.css"), mime: "text/css; charset=utf-8" }],
-  ...["model", "engine", "file", "query", "view", "export", "controller", "comparison"].map(name =>
-    ["/src/period-report-" + name + ".js", { file: resolve(here, "../src/period-report-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/period-report-panel.js", { file: resolve(here, "period-report-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/period-report.css", { file: resolve(here, "period-report.css"), mime: "text/css; charset=utf-8" }],
-  ...["model", "storage", "file", "query", "view", "controller"].map(name =>
-    ["/src/period-library-" + name + ".js", { file: resolve(here, "../src/period-library-" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/period-library-panel.js", { file: resolve(here, "period-library-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/period-library.css", { file: resolve(here, "period-library.css"), mime: "text/css; charset=utf-8" }],
-  ...["period-plan", "period-draft", "period-reader", "period-file", "period-view", "period-controller", "period-recovery", "period-progress"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/period-panel.js", { file: resolve(here, "period-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/period.css", { file: resolve(here, "period.css"), mime: "text/css; charset=utf-8" }],
-  ...["reconciliation-model", "reconciliation-engine", "reconciliation-file", "reconciliation-view", "reconciliation-query", "reconciliation-controller", "reconciliation-ledger"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/reconciliation-panel.js", { file: resolve(here, "reconciliation-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/reconciliation.css", { file: resolve(here, "reconciliation.css"), mime: "text/css; charset=utf-8" }],
-  ...["transfer-vault-timeline", "transfer-vault-collection", "transfer-vault-model", "transfer-vault-file", "transfer-vault-analytics", "transfer-vault-storage", "transfer-vault-controller", "transfer-vault-messages"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/transfer-vault-panel.js", { file: resolve(here, "transfer-vault-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["transfer-codec", "transfer-reader", "transfer-view", "transfer-file", "transfer-controller", "transfer-messages",
-    "transfer-archive", "transfer-archive-file", "transfer-archive-controller", "transfer-window"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/transfer-panel.js", { file: resolve(here, "transfer-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/transfer-archive-panel.js", { file: resolve(here, "transfer-archive-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["allowance-targets", "allowance-observation", "allowance-reader", "allowance-file",
-    "allowance-controller", "allowance-view", "allowance-overview", "allowance-bundle"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/allowance-panel.js", { file: resolve(here, "allowance-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/allowance-bundle-panel.js", { file: resolve(here, "allowance-bundle-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["token-identity-codec", "token-catalog", "token-identity-model", "token-identity-reader",
-    "token-identity-report", "token-identity-view", "token-identity-controller", "identity-overview"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/token-identity-panel.js", { file: resolve(here, "token-identity-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["checkpoint-model", "checkpoint-storage", "checkpoint-controller", "checkpoint-transfer"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/checkpoint-panel.js", { file: resolve(here, "checkpoint-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["workspace-format", "workspace-controller", "workspace-file", "workspace-overview", "workspace-review"].map(name => ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/workspace-panel.js", { file: resolve(here, "workspace-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["wallet-setup", "wallet-setup-file"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/examples/wallet-setup-panel.js", { file: resolve(here, "wallet-setup-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/history-recovery-panel.js", { file: resolve(here, "history-recovery-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/history-review-panel.js", { file: resolve(here, "history-review-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/history-files.js", { file: resolve(here, "history-files.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/history-panel.js", { file: resolve(here, "history-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/token-plan-panel.js", { file: resolve(here, "token-plan-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/comparison-panel.js", { file: resolve(here, "comparison-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/examples/portfolio-panel.js", { file: resolve(here, "portfolio-panel.js"), mime: "text/javascript; charset=utf-8" }],
-  ...["portfolio-snapshot", "portfolio-controller", "portfolio-report", "agent-portfolios", "portfolio-comparison", "token-plan", "portfolio-progress", "portfolio-history", "history-import-controller", "portfolio-history-summary", "history-file", "history-file-reader", "history-query", "history-review", "history-recovery", "history-recovery-report"].map(name =>
-    ["/src/" + name + ".js", { file: resolve(here, "../src/" + name + ".js"), mime: "text/javascript; charset=utf-8" }]),
-  ["/", { file: resolve(here, "index.html"), mime: "text/html; charset=utf-8" }],
-  ["/examples/wallet-demo.js", { file: resolve(here, "wallet-demo.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/wallet-card-controller.js", { file: resolve(here, "../src/wallet-card-controller.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/wallet-session.js", { file: resolve(here, "../src/wallet-session.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/provider-registry.js", { file: resolve(here, "../src/provider-registry.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/provider-error.js", { file: resolve(here, "../src/provider-error.js"), mime: "text/javascript; charset=utf-8" }],
-  ["/src/dapp-preflight.js", { file: resolve(here, "../src/dapp-preflight.js"), mime: "text/javascript; charset=utf-8" }],
-];
+const publicPaths = WALLET_DEMO_ASSET_FILES.map(({ path, file, contentType }) =>
+  [path, { file, mime: contentType.replace(";charset=", "; charset=") }]);
+
+function navigationGuidance(request, verdict) {
+  const port = request.socket.localPort;
+  const headers = request.headers;
+  if (verdict.status !== 403 || verdict.reason !== "Cross-origin request refused" ||
+      request.method !== "GET" || request.url !== "/" || headers.origin !== undefined ||
+      !Number.isSafeInteger(port) || port < 1 || port > 65535 ||
+      headers.host !== "127.0.0.1:" + port ||
+      headers["sec-fetch-site"] !== "cross-site" || headers["sec-fetch-mode"] !== "navigate" ||
+      headers["sec-fetch-dest"] !== "document" || headers["sec-fetch-user"] !== "?1") return null;
+  // Presentation only: keep the denied request denied, without an app-launch link.
+  return `<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThreeCore — 直接開く / Open directly</title>
+</head>
+<body>
+<main>
+<h1>ThreeCoreをアドレスバーから直接開いてください</h1>
+<p>ThreeCoreの保護機能により、外部からのページ移動を停止しました。</p>
+<p><strong>この新しいタブのアドレスバーに次のアドレスを貼り付け、Enterを押してください。</strong></p>
+<p><code>http://127.0.0.1:${port}/</code></p>
+<p>以前から開いているThreeCoreのタブは、そのまま保持してください。</p>
+<p>この案内ページはウォレットに接続せず、保存記録を読み書きしません。</p>
+<section lang="en">
+<h2>Open ThreeCore from the address bar</h2>
+<p>ThreeCore blocked this page navigation from outside the app.</p>
+<p>Copy the address above into the address bar of this new tab and press Enter.</p>
+<p>Keep any previously open ThreeCore tabs unchanged.</p>
+<p>This guide does not connect to a wallet or read or write saved records.</p>
+</section>
+</main>
+</body>
+</html>`;
+}
 
 export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch } = {}) {
   const serveBaseStateRpc = createBaseStateRpcHandler(stateFetch);
@@ -208,6 +132,7 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
     paths.set("/test/browser/history-recovery-ui-tests.js", { file: resolve(here, "../test/browser/history-recovery-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/history-review-ui-tests.js", { file: resolve(here, "../test/browser/history-review-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/history-file-ui-tests.js", { file: resolve(here, "../test/browser/history-file-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
+    paths.set("/test/browser/history-download-boundary-ui-tests.js", { file: resolve(here, "../test/browser/history-download-boundary-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/history-ui-tests.js", { file: resolve(here, "../test/browser/history-ui-tests.js"), mime: "text/javascript; charset=utf-8" });
     paths.set("/test/browser/progress-demo/", { file: resolve(here, "../test/browser/progress-demo.html"), mime: "text/html; charset=utf-8" });
     paths.set("/test/browser/progress-demo.js", { file: resolve(here, "../test/browser/progress-demo.js"), mime: "text/javascript; charset=utf-8" });
@@ -227,15 +152,16 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
     for (const [name, value] of Object.entries(SECURITY_HEADERS)) response.setHeader(name, value);
     const verdict = inspectLocalRequest(request);
     if (verdict.status !== 200) {
-      response.writeHead(verdict.status, { "content-type": "text/plain; charset=utf-8" });
-      response.end(verdict.reason);
+      const guidance = navigationGuidance(request, verdict);
+      response.writeHead(verdict.status, { "content-type": guidance === null ? "text/plain; charset=utf-8" : "text/html; charset=utf-8" });
+      response.end(guidance ?? verdict.reason);
       return;
     }
-    const item = paths.get(verdict.pathname);
     if (verdict.pathname === "/rpc/base-mainnet") {
       await serveBaseStateRpc(request, response);
       return;
     }
+    const item = paths.get(verdict.pathname);
     if (request.method !== "GET" || !item) {
       response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
       response.end("Not found");
@@ -248,7 +174,10 @@ export function createDemoServer({ uiTest = false, stateFetch = globalThis.fetch
         "cache-control": "no-store",
         "x-content-type-options": "nosniff",
       });
-      response.end(data);
+      const body = verdict.pathname === "/"
+        ? data.toString("utf8").replace('<html lang="ja">', '<html lang="ja" data-base-state-relay>')
+        : data;
+      response.end(body);
     } catch {
       response.writeHead(500);
       response.end("Unable to read demo file");

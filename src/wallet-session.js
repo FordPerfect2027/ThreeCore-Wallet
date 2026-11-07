@@ -2,6 +2,7 @@ import { observeWalletProvider } from "./provider-events.js";
 import { walletRpcSupervisor, RpcSupervisorError } from "./rpc-supervisor.js";
 import { guardRpcRequest, guardRpcResponse, RpcSecurityError } from "./security-rpc.js";
 import { safeProviderFailure } from "./security-provider-error.js";
+import { observeCallbackResult } from "./security-callback.js";
 
 // Only copy the bounded plain-data snapshot returned by guardRpcRequest.
 // Providers may normalize their input in place. Keep that mutable transport
@@ -255,7 +256,10 @@ export class ThreeCoreWalletSession {
 
   #assertAccess() {
     let allowed = false;
-    try { allowed = this.#isAccessAllowed() === true; } catch {}
+    try {
+      const value = this.#isAccessAllowed();
+      allowed = observeCallbackResult(value) === "synchronous" && value === true;
+    } catch {}
     if (!allowed) {
       this.disconnect();
       reject("ACCESS_LOCKED", "Read access is locked; explicitly reconnect after resuming");

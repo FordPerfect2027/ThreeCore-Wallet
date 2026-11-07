@@ -11,7 +11,8 @@ for (const uiTest of [false, true]) {
     });
     try {
       const base = `http://127.0.0.1:${server.address().port}`;
-      for (const path of ["/", "/examples/wallet-demo.js", "/src/wallet-card-controller.js",
+      for (const path of ["/", "/examples/wallet-demo.js", "/src/wallet-card-controller.js", "/src/wallet-connection-guidance.js",
+        "/src/agent-read-proposal.js", "/src/agent-read-policy-registry.js", "/src/agent-proposal-record.js", "/src/agent-proposal-client.js", "/examples/agent-proposal-panel.js",
         "/src/wallet-setup.js", "/src/wallet-setup-file.js", "/examples/wallet-setup-panel.js",
         "/examples/portfolio-panel.js", "/examples/token-plan-panel.js", "/src/token-plan.js", "/examples/comparison-panel.js", "/src/portfolio-comparison.js", "/src/portfolio-snapshot.js", "/src/portfolio-progress.js",
         "/src/portfolio-controller.js", "/src/portfolio-report.js", "/src/agent-portfolios.js",
@@ -24,13 +25,17 @@ for (const uiTest of [false, true]) {
       }
       for (const path of ["/test/browser/", "/test/browser/ui-tests.js",
         "/test/browser/wallet-setup-ui-tests.js",
+        "/test/browser/history-download-boundary-ui-tests.js",
         "/test/browser/progress-demo/", "/test/browser/progress-demo.js",
         "/test/browser/?harness-fault=error", "/test/browser/?harness-fault=unhandledrejection"]) {
         const response = await fetch(base + path);
         assert.equal(response.status, uiTest ? 200 : 404, path);
         await response.text();
       }
-      for (const path of ["/.env", "/package.json", "/../.git/config", "/test/wallet-card-controller.test.js"]) {
+      for (const path of ["/.env", "/.env.local", "/server/openai-read-proposer.mjs", "/server/agent-proposal-service.mjs",
+        "/server/proposal-attempt-journal.mjs", "/attempts.sqlite", "/attempts.sqlite-journal",
+        "/api/agent/propose", "/api/agent/proposal", "/api/agent/register",
+        "/package.json", "/../.git/config", "/test/wallet-card-controller.test.js"]) {
         assert.equal((await fetch(base + path)).status, 404, path);
       }
       assert.equal((await fetch(base + "/", { method: "POST" })).status, 404);

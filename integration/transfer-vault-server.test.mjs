@@ -46,7 +46,7 @@ test("vault server: complete imports stay local and resolve", async () => served
     const path = pending.pop();
     if (visited.has(path)) continue;
     visited.add(path);
-    assert.ok(visited.size < 191); // Two explicit callback/abort runtime modules added.
+    assert.ok(visited.size < 197); // Proposal modules, historical codec and same-origin client.
     const response = await fetch(base + path);
     assert.equal(response.status, 200, path);
     const source = await response.text();
@@ -57,6 +57,7 @@ test("vault server: complete imports stay local and resolve", async () => served
     }
   }
   assert(visited.has("/src/security-callback.js") && visited.has("/src/security-abort.js"));
+  assert.ok(visited.has("/src/wallet-connection-guidance.js"));
   assert.ok(visited.has("/src/checkpoint-storage.js"));
   assert.ok(visited.has("/src/transfer-archive.js"));
   assert.ok(visited.has("/src/transfer-vault-collection.js"));
